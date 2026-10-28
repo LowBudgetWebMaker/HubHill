@@ -5,6 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Watch Video - HubHill</title>
+<link rel="icon" type="image/png" href="HubHill.png">
 
 <style>
 * { box-sizing: border-box; }
@@ -13,7 +14,7 @@ body {
   margin: 0;
   background: #e9edf2;
   color: #333;
-  font: 13px Arial, sans-serif;
+  font: 13px Arial, Helvetica, sans-serif;
 }
 
 a { color: #155a9c; text-decoration: none; }
@@ -21,7 +22,7 @@ a:hover { text-decoration: underline; }
 
 header {
   background: white;
-  padding: 16px;
+  padding: 12px 20px;
   border-bottom: 1px solid #aaa;
 }
 
@@ -35,26 +36,41 @@ header {
   gap: 15px;
 }
 
-.logo {
-  font-size: 32px;
-  font-weight: bold;
-  color: #225d9c;
-  letter-spacing: -2px;
+.brand img {
+  display: block;
+  width: 180px;
+  height: auto;
 }
 
-.logo span { color: #555; }
-
-.slogan { font-size: 11px; color: #777; }
+.slogan {
+  font-size: 11px;
+  color: #777;
+  text-align: center;
+  margin-top: 4px;
+}
 
 nav {
   background: linear-gradient(#397dbb, #20558d);
-  padding: 12px max(15px, calc((100% - 1100px)/2));
+  border-bottom: 2px solid #153e6b;
+}
+
+.nav-inner {
+  max-width: 1100px;
+  margin: auto;
+  display: flex;
+  flex-wrap: wrap;
 }
 
 nav a {
+  padding: 12px 20px;
   color: white;
   font-weight: bold;
-  margin-right: 25px;
+  border-right: 1px solid #174b7e;
+}
+
+nav a:hover {
+  background: #164673;
+  text-decoration: none;
 }
 
 .container {
@@ -82,7 +98,10 @@ nav a {
 
 .panel-content { padding: 14px; }
 
-h2 { font-size: 20px; margin: 0 0 12px; }
+h2 {
+  font-size: 20px;
+  margin: 0 0 12px;
+}
 
 .player {
   background: #111;
@@ -109,9 +128,14 @@ video {
 button {
   background: linear-gradient(white, #ddd);
   border: 1px solid #999;
+  border-radius: 3px;
   padding: 7px 12px;
   cursor: pointer;
+  font-weight: bold;
 }
+
+button:hover { background: #dce9f7; }
+button:disabled { opacity: .5; cursor: not-allowed; }
 
 .notice {
   background: #fffbe5;
@@ -135,6 +159,7 @@ button {
   place-items: center;
   font-size: 24px;
   flex-shrink: 0;
+  border: 1px solid #999;
 }
 
 textarea {
@@ -142,6 +167,14 @@ textarea {
   min-height: 80px;
   padding: 8px;
   border: 1px solid #aaa;
+  resize: vertical;
+}
+
+footer {
+  text-align: center;
+  padding: 25px;
+  color: #777;
+  border-top: 1px solid #ccc;
 }
 
 @media(max-width: 750px) {
@@ -154,10 +187,13 @@ textarea {
 
 <header>
   <div class="header-inner">
-    <div>
-      <a href="index.html" class="logo">Hub<span>Hill</span></a>
+    <div class="brand">
+      <a href="index.html">
+        <img src="HubHill.png" alt="HubHill Logo">
+      </a>
       <div class="slogan">Your World. Your Watch.</div>
     </div>
+
     <div>
       <a href="index.html">Back to Homepage</a>
     </div>
@@ -165,80 +201,132 @@ textarea {
 </header>
 
 <nav>
-  <a href="index.html">Home</a>
-  <a href="index.html#featured">Videos</a>
-  <a href="index.html#categories">Categories</a>
+  <div class="nav-inner">
+    <a href="index.html">Home</a>
+    <a href="index.html#featured">Videos</a>
+    <a href="index.html#categories">Categories</a>
+    <a href="#" class="soon">Channels</a>
+    <a href="#" class="soon">Upload</a>
+  </div>
 </nav>
 
 <div class="container">
   <main>
+
     <section class="panel">
       <div class="panel-content">
+
         <h2>Welcome to HubHill!</h2>
 
         <div class="player">
           <video controls preload="metadata" playsinline>
-            <source src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" type="video/mp4">
+            <source
+              src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4"
+              type="video/mp4">
             Your browser does not support video playback.
           </video>
         </div>
 
         <div class="video-stats">
-          <span>From: <a href="#">HubHill</a></span>
+          <span>
+            From: <a href="#" class="soon">HubHill</a>
+          </span>
           <span>Views: 0 | Added: 2026</span>
         </div>
 
         <hr>
 
-        <button onclick="alert('Ratings are coming soon!')">
-          ★ Rate Video
-        </button>
-        <button onclick="alert('Sharing is coming soon!')">
-          Share
-        </button>
-        <button onclick="alert('Favorites are coming soon!')">
-          Add to Favorites
-        </button>
+        <button class="soon">★ Rate Video</button>
+        <button class="soon">Share</button>
+        <button class="soon">Add to Favorites</button>
+
       </div>
     </section>
 
     <section class="panel">
       <div class="panel-title">Video Description</div>
       <div class="panel-content">
-        Welcome to HubHill, your classic video-sharing community!
-        This is a demonstration video player.
+        Welcome to HubHill, your classic
+        video-sharing community!
+
+        <p>
+          This is a demonstration video player.
+          Real video uploads will be added later.
+        </p>
       </div>
     </section>
 
     <section class="panel">
       <div class="panel-title">Comments</div>
       <div class="panel-content">
+
         <p>Join the conversation!</p>
-        <textarea placeholder="Write a comment..." disabled></textarea>
-        <p><button disabled>Post Comment</button></p>
+
+        <textarea
+          placeholder="Write a comment..."
+          disabled></textarea>
+
+        <p>
+          <button disabled>Post Comment</button>
+        </p>
+
         <div class="notice">
-          Comments will become available when user accounts are implemented.
+          Comments will become available when
+          user accounts are implemented.
         </div>
+
       </div>
     </section>
+
   </main>
 
   <aside>
+
     <section class="panel">
       <div class="panel-title">Related Videos</div>
       <div class="panel-content">
+
         <div class="related">
-          <div class="related-thumb">▶</div>
+          <a href="watch.html" class="related-thumb">▶</a>
           <div>
-            <a href="watch.html">Welcome to HubHill!</a>
+            <a href="watch.html">
+              <strong>Welcome to HubHill!</strong>
+            </a>
             <p>HubHill</p>
           </div>
         </div>
+
         <p>More videos coming soon!</p>
+
       </div>
     </section>
+
+    <section class="panel">
+      <div class="panel-title">About HubHill</div>
+      <div class="panel-content">
+        <strong>Your World. Your Watch.</strong>
+        <p>
+          Discover, watch, and share videos
+          with the HubHill community.
+        </p>
+      </div>
+    </section>
+
   </aside>
 </div>
+
+<footer>
+  HubHill &copy; 2026 - Your World. Your Watch.
+</footer>
+
+<script>
+document.querySelectorAll(".soon").forEach(element => {
+  element.addEventListener("click", function(event) {
+    event.preventDefault();
+    alert("This HubHill feature is coming soon!");
+  });
+});
+</script>
 
 </body>
 </html>
