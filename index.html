@@ -1,300 +1,68 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>HubHill - Your World. Your Watch.</title>
+<link rel="icon" type="image/png" href="HubHill.png">
 <style>
 * { box-sizing: border-box; }
-
-body {
-  margin: 0;
-  background: #e9edf2;
-  color: #333;
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 13px;
-}
-
+body { margin: 0; background: #e9edf2; color: #333; font-family: Arial, Helvetica, sans-serif; font-size: 13px; }
 a { color: #155a9c; text-decoration: none; }
 a:hover { text-decoration: underline; }
-
-header {
-  background: white;
-  border-bottom: 1px solid #aaa;
-  padding: 15px 20px;
-}
-
-.header-inner {
-  max-width: 1100px;
-  margin: auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 20px;
-  flex-wrap: wrap;
-}
-
-.logo {
-  font-size: 34px;
-  font-weight: bold;
-  color: #225d9c;
-  letter-spacing: -2px;
-}
-
-.logo span { color: #555; }
-
-.slogan {
-  font-size: 11px;
-  color: #777;
-  letter-spacing: 0;
-}
-
-.search {
-  display: flex;
-  gap: 5px;
-  flex: 1;
-  max-width: 430px;
-}
-
-.search input {
-  flex: 1;
-  min-width: 100px;
-  padding: 8px;
-  border: 1px solid #aaa;
-}
-
-button {
-  background: linear-gradient(#fff, #ddd);
-  border: 1px solid #999;
-  border-radius: 3px;
-  padding: 8px 13px;
-  cursor: pointer;
-  color: #333;
-  font-weight: bold;
-}
-
+header { background: white; border-bottom: 1px solid #aaa; padding: 15px 20px; }
+.header-inner { max-width: 1100px; margin: auto; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+.logo-image { width: 180px; height: auto; display: block; }
+.slogan { font-size: 11px; color: #777; letter-spacing: 0; }
+.search { display: flex; gap: 5px; flex: 1; max-width: 430px; }
+.search input { flex: 1; min-width: 100px; padding: 8px; border: 1px solid #aaa; }
+button { background: linear-gradient(#fff, #ddd); border: 1px solid #999; border-radius: 3px; padding: 8px 13px; cursor: pointer; color: #333; font-weight: bold; }
 button:hover { background: #dce9f7; }
-
-nav {
-  background: linear-gradient(#397dbb, #20558d);
-  border-bottom: 2px solid #153e6b;
-}
-
-.nav-inner {
-  max-width: 1100px;
-  margin: auto;
-  display: flex;
-  flex-wrap: wrap;
-}
-
-nav a {
-  padding: 12px 20px;
-  color: white;
-  font-weight: bold;
-  border-right: 1px solid #174b7e;
-}
-
-nav a:hover {
-  background: #164673;
-  text-decoration: none;
-}
-
-.container {
-  max-width: 1100px;
-  margin: 20px auto;
-  padding: 0 12px;
-  display: grid;
-  grid-template-columns: 1fr 250px;
-  gap: 18px;
-}
-
-.panel {
-  background: white;
-  border: 1px solid #b8c4d1;
-  margin-bottom: 18px;
-}
-
-.panel-title {
-  background: linear-gradient(#eaf3fc, #c8dff4);
-  color: #245b91;
-  font-size: 15px;
-  font-weight: bold;
-  padding: 10px;
-  border-bottom: 1px solid #b8c4d1;
-}
-
+nav { background: linear-gradient(#397dbb, #20558d); border-bottom: 2px solid #153e6b; }
+.nav-inner { max-width: 1100px; margin: auto; display: flex; flex-wrap: wrap; }
+nav a { padding: 12px 20px; color: white; font-weight: bold; border-right: 1px solid #174b7e; }
+nav a:hover { background: #164673; text-decoration: none; }
+.container { max-width: 1100px; margin: 20px auto; padding: 0 12px; display: grid; grid-template-columns: 1fr 250px; gap: 18px; }
+.panel { background: white; border: 1px solid #b8c4d1; margin-bottom: 18px; }
+.panel-title { background: linear-gradient(#eaf3fc, #c8dff4); color: #245b91; font-size: 15px; font-weight: bold; padding: 10px; border-bottom: 1px solid #b8c4d1; }
 .panel-content { padding: 13px; }
-
-.video-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 18px;
-}
-
+.video-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
 .video-card { min-width: 0; }
-
-.thumbnail {
-  height: 115px;
-  border: 1px solid #999;
-  background: linear-gradient(135deg, #aec5dc, #416e9e);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: white;
-  font-size: 32px;
-  position: relative;
-}
-
-.duration {
-  position: absolute;
-  bottom: 4px;
-  right: 4px;
-  background: #222;
-  color: white;
-  font-size: 11px;
-  padding: 2px 4px;
-}
-
-.video-title {
-  font-weight: bold;
-  margin-top: 7px;
-  line-height: 1.4;
-}
-
-.video-info {
-  font-size: 11px;
-  color: #777;
-  line-height: 1.7;
-}
-
-.sidebar-link {
-  display: block;
-  padding: 8px 4px;
-  border-bottom: 1px dotted #ddd;
-}
-
-.welcome {
-  background: #fffbe5;
-  border: 1px solid #e5d493;
-  padding: 13px;
-  line-height: 1.6;
-  margin-bottom: 18px;
-}
-
-footer {
-  text-align: center;
-  padding: 25px;
-  color: #777;
-  font-size: 12px;
-  border-top: 1px solid #ccc;
-}
-
-@media (max-width: 750px) {
-  .container { grid-template-columns: 1fr; }
-  .video-grid { grid-template-columns: repeat(2, 1fr); }
-}
-
-@media (max-width: 420px) {
-  .video-grid { grid-template-columns: 1fr; }
-  .search { max-width: 100%; }
-}
+.thumbnail { height: 115px; border: 1px solid #999; background: linear-gradient(135deg, #aec5dc, #416e9e); display: flex; justify-content: center; align-items: center; color: white; font-size: 32px; position: relative; }
+.duration { position: absolute; bottom: 4px; right: 4px; background: #222; color: white; font-size: 11px; padding: 2px 4px; }
+.video-title { font-weight: bold; margin-top: 7px; line-height: 1.4; }
+.video-info { font-size: 11px; color: #777; line-height: 1.7; }
+.sidebar-link { display: block; padding: 8px 4px; border-bottom: 1px dotted #ddd; }
+.welcome { background: #fffbe5; border: 1px solid #e5d493; padding: 13px; line-height: 1.6; margin-bottom: 18px; }
+footer { text-align: center; padding: 25px; color: #777; font-size: 12px; border-top: 1px solid #ccc; }
+@media (max-width: 750px) { .container { grid-template-columns: 1fr; } .video-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 420px) { .video-grid { grid-template-columns: 1fr; } .search { max-width: 100%; } }
 </style>
 </head>
 <body>
-
-<header>
-  <div class="header-inner">
-    <div>
-      <div class="logo">Hub<span>Hill</span></div>
-      <div class="slogan">Your World. Your Watch.</div>
-    </div>
-
-    <form class="search" onsubmit="return searchVideos(event)">
-      <input id="searchInput" type="search" placeholder="Search videos..." aria-label="Search videos">
-      <button type="submit">Search</button>
-    </form>
-
-    <div>
-      <a href="#" onclick="comingSoon(event)">Sign Up</a> |
-      <a href="#" onclick="comingSoon(event)">Log In</a>
-    </div>
-  </div>
-</header>
-
-<nav>
-  <div class="nav-inner">
-    <a href="#home">Home</a>
-    <a href="#featured">Videos</a>
-    <a href="#categories">Categories</a>
-    <a href="#" onclick="comingSoon(event)">Channels</a>
-    <a href="#" onclick="comingSoon(event)">Upload</a>
-  </div>
-</nav>
-
+<header><div class="header-inner">
+  <div><a href="index.html"><img class="logo-image" src="HubHill.png" alt="HubHill logo"></a><div class="slogan">Your World. Your Watch.</div></div>
+  <form class="search" onsubmit="return searchVideos(event)"><input id="searchInput" type="search" placeholder="Search videos..." aria-label="Search videos"><button type="submit">Search</button></form>
+  <div><a href="#" onclick="comingSoon(event)">Sign Up</a> | <a href="#" onclick="comingSoon(event)">Log In</a></div>
+</div></header>
+<nav><div class="nav-inner">
+  <a href="#home">Home</a><a href="#featured">Videos</a><a href="#categories">Categories</a><a href="#" onclick="comingSoon(event)">Channels</a><a href="#" onclick="comingSoon(event)">Upload</a>
+</div></nav>
 <div class="container" id="home">
-  <main>
-    <div class="welcome">
-      <strong>Welcome to HubHill!</strong>
-      <p>Your World. Your Watch.</p>
-      Discover videos, share your creativity, and become
-      part of a new old-school video community!
-    </div>
-
-    <section class="panel" id="featured">
-      <div class="panel-title">Featured Videos</div>
-      <div class="panel-content">
-        <div class="video-grid" id="featuredGrid"></div>
-      </div>
-    </section>
-
-    <section class="panel">
-      <div class="panel-title">Recently Added</div>
-      <div class="panel-content">
-        <div class="video-grid" id="recentGrid"></div>
-      </div>
-    </section>
-  </main>
-
-  <aside>
-    <section class="panel" id="categories">
-      <div class="panel-title">Video Categories</div>
-      <div class="panel-content">
-        <a class="sidebar-link" href="#" onclick="comingSoon(event)">Gaming</a>
-        <a class="sidebar-link" href="#" onclick="comingSoon(event)">Comedy</a>
-        <a class="sidebar-link" href="#" onclick="comingSoon(event)">Music</a>
-        <a class="sidebar-link" href="#" onclick="comingSoon(event)">Entertainment</a>
-        <a class="sidebar-link" href="#" onclick="comingSoon(event)">Education</a>
-        <a class="sidebar-link" href="#" onclick="comingSoon(event)">People & Blogs</a>
-        <a class="sidebar-link" href="#" onclick="comingSoon(event)">Technology</a>
-      </div>
-    </section>
-
-    <section class="panel">
-      <div class="panel-title">Join HubHill!</div>
-      <div class="panel-content">
-        <p>Share videos and build your own channel.</p>
-        <button onclick="alert('Registration is coming soon!')">
-          Create an Account
-        </button>
-      </div>
-    </section>
-
-    <section class="panel">
-      <div class="panel-title">HubHill News</div>
-      <div class="panel-content">
-        <strong>Welcome to HubHill!</strong>
-        <p>Our classic video-sharing website is under construction.</p>
-      </div>
-    </section>
-  </aside>
+<main>
+  <div class="welcome"><strong>Welcome to HubHill!</strong><p>Your World. Your Watch.</p>Discover videos, share your creativity, and become part of a new old-school video community!</div>
+  <section class="panel" id="featured"><div class="panel-title">Featured Videos</div><div class="panel-content"><div class="video-grid" id="featuredGrid"></div></div></section>
+  <section class="panel"><div class="panel-title">Recently Added</div><div class="panel-content"><div class="video-grid" id="recentGrid"></div></div></section>
+</main>
+<aside>
+  <section class="panel" id="categories"><div class="panel-title">Video Categories</div><div class="panel-content">
+    <a class="sidebar-link" href="#" onclick="comingSoon(event)">Gaming</a><a class="sidebar-link" href="#" onclick="comingSoon(event)">Comedy</a><a class="sidebar-link" href="#" onclick="comingSoon(event)">Music</a><a class="sidebar-link" href="#" onclick="comingSoon(event)">Entertainment</a><a class="sidebar-link" href="#" onclick="comingSoon(event)">Education</a><a class="sidebar-link" href="#" onclick="comingSoon(event)">People &amp; Blogs</a><a class="sidebar-link" href="#" onclick="comingSoon(event)">Technology</a>
+  </div></section>
+  <section class="panel"><div class="panel-title">Join HubHill!</div><div class="panel-content"><p>Share videos and build your own channel.</p><button onclick="alert('Registration is coming soon!')">Create an Account</button></div></section>
+  <section class="panel"><div class="panel-title">HubHill News</div><div class="panel-content"><strong>Welcome to HubHill!</strong><p>Our classic video-sharing website is under construction.</p></div></section>
+</aside>
 </div>
-
-<footer>
-  HubHill &copy; 2026 - Your World. Your Watch.
-  <p>About | Community Guidelines | Contact</p>
-</footer>
-
+<footer>HubHill &copy; 2026 - Your World. Your Watch.<p>About | Community Guidelines | Contact</p></footer>
 <script>
 const demoVideos = [
   { title: "Welcome to HubHill!", user: "HubHill", views: 120, duration: "1:24", icon: "▶" },
@@ -304,72 +72,27 @@ const demoVideos = [
   { title: "A Day in My Life", user: "VideoMaker", views: 98, duration: "4:05", icon: "☀" },
   { title: "The Internet Is Awesome!", user: "WebFan", views: 157, duration: "2:50", icon: "✿" }
 ];
-
 function createCard(video) {
-  const card = document.createElement("div");
-  card.className = "video-card";
-
-  const thumb = document.createElement("div");
-  thumb.className = "thumbnail";
-  thumb.textContent = video.icon;
-
-  const duration = document.createElement("span");
-  duration.className = "duration";
-  duration.textContent = video.duration;
-  thumb.appendChild(duration);
-
-  const title = document.createElement("div");
-  title.className = "video-title";
-
-  const link = document.createElement("a");
-  link.href = "#";
-  link.textContent = video.title;
-  link.addEventListener("click", comingSoon);
-  title.appendChild(link);
-
-  const info = document.createElement("div");
-  info.className = "video-info";
-  info.textContent = `From: ${video.user} | Views: ${video.views}`;
-
-  card.append(thumb, title, info);
-  return card;
+  const card = document.createElement("div"); card.className = "video-card";
+  const thumb = document.createElement("div"); thumb.className = "thumbnail"; thumb.textContent = video.icon;
+  const duration = document.createElement("span"); duration.className = "duration"; duration.textContent = video.duration; thumb.appendChild(duration);
+  const title = document.createElement("div"); title.className = "video-title";
+  const link = document.createElement("a"); link.href = "watch.html"; link.textContent = video.title; title.appendChild(link);
+  const info = document.createElement("div"); info.className = "video-info"; info.textContent = `From: ${video.user} | Views: ${video.views}`;
+  card.append(thumb, title, info); return card;
 }
-
 function showVideos(videos, targetId) {
-  const grid = document.getElementById(targetId);
-  grid.replaceChildren();
-
-  videos.forEach(video => {
-    grid.appendChild(createCard(video));
-  });
+  const grid = document.getElementById(targetId); grid.replaceChildren(); videos.forEach(video => grid.appendChild(createCard(video)));
 }
-
-function comingSoon(event) {
-  event.preventDefault();
-  alert("This HubHill feature is coming soon!");
-}
-
+function comingSoon(event) { event.preventDefault(); alert("This HubHill feature is coming soon!"); }
 function searchVideos(event) {
-  event.preventDefault();
-  const query = document.getElementById("searchInput").value.toLowerCase().trim();
-  const results = demoVideos.filter(video =>
-    video.title.toLowerCase().includes(query)
-  );
-
-  showVideos(results, "featuredGrid");
-  document.querySelector("#featured .panel-title").textContent =
-    query ? "Search Results" : "Featured Videos";
-
-  if (!results.length) {
-    document.getElementById("featuredGrid").textContent =
-      "No matching videos found.";
-  }
+  event.preventDefault(); const query = document.getElementById("searchInput").value.toLowerCase().trim();
+  const results = demoVideos.filter(video => video.title.toLowerCase().includes(query));
+  showVideos(results, "featuredGrid"); document.querySelector("#featured .panel-title").textContent = query ? "Search Results" : "Featured Videos";
+  if (!results.length) document.getElementById("featuredGrid").textContent = "No matching videos found.";
   return false;
 }
-
-showVideos(demoVideos, "featuredGrid");
-showVideos([...demoVideos].reverse(), "recentGrid");
+showVideos(demoVideos, "featuredGrid"); showVideos([...demoVideos].reverse(), "recentGrid");
 </script>
-
 </body>
 </html>
