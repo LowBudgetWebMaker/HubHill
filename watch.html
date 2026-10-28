@@ -5,328 +5,177 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Watch Video - HubHill</title>
-<link rel="icon" type="image/png" href="HubHill.png">
-
+<link rel="icon" href="HubHill.png" type="image/png">
 <style>
-* { box-sizing: border-box; }
-
-body {
-  margin: 0;
-  background: #e9edf2;
-  color: #333;
-  font: 13px Arial, Helvetica, sans-serif;
-}
-
-a { color: #155a9c; text-decoration: none; }
-a:hover { text-decoration: underline; }
-
-header {
-  background: white;
-  padding: 12px 20px;
-  border-bottom: 1px solid #aaa;
-}
-
-.header-inner {
-  max-width: 1100px;
-  margin: auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 15px;
-}
-
-.brand img {
-  display: block;
-  width: 180px;
-  height: auto;
-}
-
-.slogan {
-  font-size: 11px;
-  color: #777;
-  text-align: center;
-  margin-top: 4px;
-}
-
-nav {
-  background: linear-gradient(#397dbb, #20558d);
-  border-bottom: 2px solid #153e6b;
-}
-
-.nav-inner {
-  max-width: 1100px;
-  margin: auto;
-  display: flex;
-  flex-wrap: wrap;
-}
-
-nav a {
-  padding: 12px 20px;
-  color: white;
-  font-weight: bold;
-  border-right: 1px solid #174b7e;
-}
-
-nav a:hover {
-  background: #164673;
-  text-decoration: none;
-}
-
-.container {
-  max-width: 1100px;
-  margin: 20px auto;
-  padding: 0 12px;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 270px;
-  gap: 18px;
-}
-
-.panel {
-  background: white;
-  border: 1px solid #b8c4d1;
-  margin-bottom: 15px;
-}
-
-.panel-title {
-  padding: 10px;
-  background: linear-gradient(#eaf3fc, #c8dff4);
-  border-bottom: 1px solid #b8c4d1;
-  color: #245b91;
-  font-weight: bold;
-}
-
-.panel-content { padding: 14px; }
-
-h2 {
-  font-size: 20px;
-  margin: 0 0 12px;
-}
-
-.player {
-  background: #111;
-  border: 5px solid #555;
-  padding: 8px;
-}
-
-video {
-  display: block;
-  width: 100%;
-  aspect-ratio: 4/3;
-  background: black;
-}
-
-.video-stats {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 14px;
-  color: #666;
-}
-
-button {
-  background: linear-gradient(white, #ddd);
-  border: 1px solid #999;
-  border-radius: 3px;
-  padding: 7px 12px;
-  cursor: pointer;
-  font-weight: bold;
-}
-
-button:hover { background: #dce9f7; }
-button:disabled { opacity: .5; cursor: not-allowed; }
-
-.notice {
-  background: #fffbe5;
-  border: 1px solid #e5d493;
-  padding: 12px;
-  line-height: 1.6;
-}
-
-.related {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 15px;
-}
-
-.related-thumb {
-  background: #416e9e;
-  color: white;
-  width: 100px;
-  height: 65px;
-  display: grid;
-  place-items: center;
-  font-size: 24px;
-  flex-shrink: 0;
-  border: 1px solid #999;
-}
-
-textarea {
-  width: 100%;
-  min-height: 80px;
-  padding: 8px;
-  border: 1px solid #aaa;
-  resize: vertical;
-}
-
-footer {
-  text-align: center;
-  padding: 25px;
-  color: #777;
-  border-top: 1px solid #ccc;
-}
-
-@media(max-width: 750px) {
-  .container { grid-template-columns: 1fr; }
-}
+*{box-sizing:border-box}
+body{margin:0;background:#e9edf2;color:#333;font:13px Arial,sans-serif}
+a{color:#155a9c;text-decoration:none}
+a:hover{text-decoration:underline}
+header{background:#fff;border-bottom:1px solid #aaa}
+.header-inner{max-width:1100px;margin:auto;min-height:85px;padding:8px 12px;display:flex;align-items:center;justify-content:space-between;gap:15px;flex-wrap:wrap}
+.brand{width:165px;flex-shrink:0}
+.logo-crop{width:165px;height:55px;overflow:hidden;position:relative;display:block}
+.logo-crop img{position:absolute;width:165px;height:165px;max-width:none;top:-55px;left:0}
+.slogan{font-size:10px;color:#777;text-align:center}
+nav{background:linear-gradient(#397dbb,#20558d);border-bottom:2px solid #153e6b}
+.nav-inner{max-width:1100px;margin:auto;display:flex;flex-wrap:wrap}
+nav a{padding:12px 20px;color:white;font-weight:bold;border-right:1px solid #174b7e}
+nav a:hover{background:#164673;text-decoration:none}
+.container{max-width:1100px;margin:20px auto;padding:0 12px;display:grid;grid-template-columns:minmax(0,1fr) 270px;gap:18px}
+.panel{background:white;border:1px solid #b8c4d1;margin-bottom:15px}
+.panel-title{padding:10px;background:linear-gradient(#eaf3fc,#c8dff4);border-bottom:1px solid #b8c4d1;color:#245b91;font-weight:bold}
+.panel-content{padding:14px}
+h2{font-size:20px;margin:0 0 12px}
+.player{background:#111;border:5px solid #555;padding:8px}
+video{display:block;width:100%;aspect-ratio:4/3;background:black}
+.video-stats{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-top:14px;color:#666}
+button{background:linear-gradient(white,#ddd);border:1px solid #999;border-radius:3px;padding:7px 12px;cursor:pointer;font-weight:bold;margin:3px}
+button:hover{background:#dce9f7}
+button:disabled{opacity:.5;cursor:not-allowed}
+.notice{background:#fffbe5;border:1px solid #e5d493;padding:12px;line-height:1.6}
+.related{display:flex;gap:10px;margin-bottom:15px;align-items:flex-start}
+.related-thumb{background:#416e9e;color:white;width:100px;height:65px;display:grid;place-items:center;font-size:24px;flex-shrink:0;border:1px solid #999}
+.related-info{min-width:0}
+.related-info p{font-size:11px;color:#777;margin:5px 0}
+textarea{width:100%;min-height:80px;padding:8px;border:1px solid #aaa;resize:vertical}
+footer{text-align:center;padding:25px;color:#777;border-top:1px solid #ccc}
+@media(max-width:750px){.container{grid-template-columns:1fr}}
 </style>
 </head>
-
 <body>
 
 <header>
-  <div class="header-inner">
-    <div class="brand">
-      <a href="index.html">
-        <img src="HubHill.png" alt="HubHill Logo">
-      </a>
-      <div class="slogan">Your World. Your Watch.</div>
-    </div>
-
-    <div>
-      <a href="index.html">Back to Homepage</a>
-    </div>
-  </div>
+<div class="header-inner">
+ <div class="brand">
+  <a href="index.html" class="logo-crop">
+   <img src="HubHill.png" alt="HubHill">
+  </a>
+  <div class="slogan">Your World. Your Watch.</div>
+ </div>
+ <a href="index.html">Back to Homepage</a>
+</div>
 </header>
 
-<nav>
-  <div class="nav-inner">
-    <a href="index.html">Home</a>
-    <a href="index.html#featured">Videos</a>
-    <a href="index.html#categories">Categories</a>
-    <a href="#" class="soon">Channels</a>
-    <a href="#" class="soon">Upload</a>
-  </div>
-</nav>
+<nav><div class="nav-inner">
+<a href="index.html">Home</a>
+<a href="index.html#featured">Videos</a>
+<a href="index.html#categories">Categories</a>
+<a href="#" class="soon">Channels</a>
+<a href="#" class="soon">Upload</a>
+</div></nav>
 
 <div class="container">
-  <main>
+<main>
+ <section class="panel">
+  <div class="panel-content">
+   <h2 id="videoTitle">Loading video...</h2>
+   <div class="player">
+    <video controls preload="metadata" playsinline>
+     <source src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" type="video/mp4">
+     Your browser does not support video playback.
+    </video>
+   </div>
+   <div class="video-stats">
+    <span>From: <a href="#" id="uploader" class="soon">HubHill</a></span>
+    <span id="viewCount">Views: 0 | Added: 2026</span>
+   </div>
+   <hr>
+   <button class="soon">★ Rate Video</button>
+   <button id="shareButton">Share</button>
+   <button class="soon">Add to Favorites</button>
+  </div>
+ </section>
 
-    <section class="panel">
-      <div class="panel-content">
+ <section class="panel">
+  <div class="panel-title">Video Description</div>
+  <div class="panel-content">
+   <p id="description"></p>
+   <div class="notice">
+    This is a demonstration page. All example entries currently play the same sample video.
+   </div>
+  </div>
+ </section>
 
-        <h2>Welcome to HubHill!</h2>
+ <section class="panel">
+  <div class="panel-title">Comments</div>
+  <div class="panel-content">
+   <p>Join the conversation!</p>
+   <textarea placeholder="Write a comment..." disabled></textarea>
+   <p><button disabled>Post Comment</button></p>
+   <div class="notice">Comments will become available when user accounts are implemented.</div>
+  </div>
+ </section>
+</main>
 
-        <div class="player">
-          <video controls preload="metadata" playsinline>
-            <source
-              src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4"
-              type="video/mp4">
-            Your browser does not support video playback.
-          </video>
-        </div>
-
-        <div class="video-stats">
-          <span>
-            From: <a href="#" class="soon">HubHill</a>
-          </span>
-          <span>Views: 0 | Added: 2026</span>
-        </div>
-
-        <hr>
-
-        <button class="soon">★ Rate Video</button>
-        <button class="soon">Share</button>
-        <button class="soon">Add to Favorites</button>
-
-      </div>
-    </section>
-
-    <section class="panel">
-      <div class="panel-title">Video Description</div>
-      <div class="panel-content">
-        Welcome to HubHill, your classic
-        video-sharing community!
-
-        <p>
-          This is a demonstration video player.
-          Real video uploads will be added later.
-        </p>
-      </div>
-    </section>
-
-    <section class="panel">
-      <div class="panel-title">Comments</div>
-      <div class="panel-content">
-
-        <p>Join the conversation!</p>
-
-        <textarea
-          placeholder="Write a comment..."
-          disabled></textarea>
-
-        <p>
-          <button disabled>Post Comment</button>
-        </p>
-
-        <div class="notice">
-          Comments will become available when
-          user accounts are implemented.
-        </div>
-
-      </div>
-    </section>
-
-  </main>
-
-  <aside>
-
-    <section class="panel">
-      <div class="panel-title">Related Videos</div>
-      <div class="panel-content">
-
-        <div class="related">
-          <a href="watch.html" class="related-thumb">▶</a>
-          <div>
-            <a href="watch.html">
-              <strong>Welcome to HubHill!</strong>
-            </a>
-            <p>HubHill</p>
-          </div>
-        </div>
-
-        <p>More videos coming soon!</p>
-
-      </div>
-    </section>
-
-    <section class="panel">
-      <div class="panel-title">About HubHill</div>
-      <div class="panel-content">
-        <strong>Your World. Your Watch.</strong>
-        <p>
-          Discover, watch, and share videos
-          with the HubHill community.
-        </p>
-      </div>
-    </section>
-
-  </aside>
+<aside>
+ <section class="panel">
+  <div class="panel-title">Related Videos</div>
+  <div class="panel-content" id="relatedList"></div>
+ </section>
+ <section class="panel">
+  <div class="panel-title">About HubHill</div>
+  <div class="panel-content">
+   <strong>Your World. Your Watch.</strong>
+   <p>Discover, watch, and share videos with the HubHill community.</p>
+  </div>
+ </section>
+</aside>
 </div>
 
-<footer>
-  HubHill &copy; 2026 - Your World. Your Watch.
-</footer>
+<footer>HubHill &copy; 2026 - Your World. Your Watch.</footer>
 
 <script>
-document.querySelectorAll(".soon").forEach(element => {
-  element.addEventListener("click", function(event) {
-    event.preventDefault();
-    alert("This HubHill feature is coming soon!");
-  });
+const videos=[
+{id:1,title:"Welcome to HubHill!",user:"HubHill",views:120,icon:"▶",description:"Welcome to HubHill, your classic video-sharing community!"},
+{id:2,title:"My First Video!",user:"RetroUser",views:84,icon:"★",description:"My very first video on HubHill!"},
+{id:3,title:"Funny Moments Compilation",user:"ComedyFan",views:215,icon:"☺",description:"A collection of funny moments."},
+{id:4,title:"Classic Gaming Adventures",user:"GameMaster",views:340,icon:"✦",description:"Join me for some classic gaming adventures!"},
+{id:5,title:"A Day in My Life",user:"VideoMaker",views:98,icon:"☀",description:"A little look into my daily life."},
+{id:6,title:"The Internet Is Awesome!",user:"WebFan",views:157,icon:"✿",description:"Celebrating the internet and its communities."}
+];
+
+const requestedId=Number(new URLSearchParams(location.search).get("v"));
+const video=videos.find(v=>v.id===requestedId)||videos[0];
+
+document.title=video.title+" - HubHill";
+document.getElementById("videoTitle").textContent=video.title;
+document.getElementById("uploader").textContent=video.user;
+document.getElementById("viewCount").textContent="Views: "+video.views+" | Added: 2026";
+document.getElementById("description").textContent=video.description;
+
+const related=document.getElementById("relatedList");
+videos.filter(v=>v.id!==video.id).forEach(v=>{
+ const item=document.createElement("div");
+ item.className="related";
+ const thumb=document.createElement("a");
+ thumb.className="related-thumb";
+ thumb.href="watch.html?v="+v.id;
+ thumb.textContent=v.icon;
+ const info=document.createElement("div");
+ info.className="related-info";
+ const link=document.createElement("a");
+ link.href=thumb.href;
+ link.textContent=v.title;
+ const user=document.createElement("p");
+ user.textContent="From: "+v.user;
+ info.append(link,user);
+ item.append(thumb,info);
+ related.appendChild(item);
+});
+
+document.querySelectorAll(".soon").forEach(el=>el.addEventListener("click",e=>{
+ e.preventDefault();
+ alert("This HubHill feature is coming soon!");
+}));
+
+document.getElementById("shareButton").addEventListener("click",async()=>{
+ try{
+  await navigator.clipboard.writeText(location.href);
+  alert("Video link copied!");
+ }catch{
+  prompt("Copy this video link:",location.href);
+ }
 });
 </script>
-
 </body>
 </html>
