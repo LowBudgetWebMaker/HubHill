@@ -6,6 +6,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Watch Video - HubHill</title>
 <link rel="icon" href="HubHill.png" type="image/png">
+  <link rel="stylesheet" href="auth.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js" defer></script>
+<script src="auth.js" defer></script>
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:#e9edf2;color:#333;font:13px Arial,sans-serif}
@@ -92,7 +95,7 @@ footer{text-align:center;padding:25px;color:#777;border-top:1px solid #ccc}
   </a>
   <div class="slogan">Your World. Your Watch.</div>
  </div>
- <a href="index.html">Back to Homepage</a>
+ <div class="auth-links">   <span data-auth-guest>     <a href="#" data-open-auth="signup">Sign Up</a> |     <a href="#" data-open-auth="login">Log In</a>   </span>    <span data-auth-user hidden>     Welcome, <strong data-username></strong> |     <button type="button" data-logout>Log Out</button>   </span>    <p><a href="index.html">Back to Homepage</a></p> </div>
 </div>
 </header>
 
