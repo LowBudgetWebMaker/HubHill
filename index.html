@@ -14,31 +14,48 @@ a:hover{text-decoration:underline}
 header{background:#fff;border-bottom:1px solid #aaa}
 .header-inner{max-width:1100px;margin:auto;min-height:85px;padding:8px 12px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
 .brand {
-  width: 165px;
+  width: 175px;
+  height: 65px;
   flex-shrink: 0;
   text-align: center;
 }
 
 .logo-crop {
   display: block;
-  width: 165px;
-  height: 75px;
+  width: 175px;
+  height: 48px;
   overflow: hidden;
+  position: relative;
 }
 
 .logo-crop img {
-  display: block;
-  width: 165px;
-  height: 75px;
-  object-fit: contain;
-  object-position: center;
+  position: absolute;
+  width: 175px;
+  height: 175px;
+  max-width: none;
+  top: -59px;
+  left: 0;
+  object-fit: fill;
 }
 
 .slogan {
   font-size: 10px;
   color: #777;
   text-align: center;
-  margin-top: 2px;
+  margin-top: 1px;
+}
+
+.header-inner {
+  max-width: 1100px;
+  margin: auto;
+  height: 78px;
+  min-height: 78px;
+  padding: 5px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
 }
 .search{display:flex;gap:5px;flex:1;max-width:430px}
 .search input{flex:1;min-width:80px;padding:8px;border:1px solid #aaa}
