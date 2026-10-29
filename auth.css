@@ -1,0 +1,74 @@
+
+#authModal[hidden],
+[data-auth-guest][hidden],
+[data-auth-user][hidden] {
+  display: none !important;
+}
+
+#authModal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.65);
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+}
+
+.auth-box {
+  background: white;
+  border: 2px solid #376d9c;
+  width: 100%;
+  max-width: 380px;
+  padding: 20px;
+  box-shadow: 0 5px 20px #3336;
+  font: 13px Arial, sans-serif;
+}
+
+.auth-box h2 {
+  color: #245b91;
+  font-size: 20px;
+}
+
+.auth-box label {
+  display: block;
+  margin: 12px 0 5px;
+  font-weight: bold;
+}
+
+.auth-box input {
+  display: block;
+  width: 100%;
+  padding: 9px;
+  border: 1px solid #aaa;
+}
+
+.auth-box button {
+  margin-top: 15px;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+#authClose {
+  float: right;
+  margin: 0;
+}
+
+#authMessage {
+  line-height: 1.5;
+  margin-top: 15px;
+}
+
+.auth-links {
+  font-size: 13px;
+}
+
+.auth-links button {
+  font: inherit;
+  color: #155a9c;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
