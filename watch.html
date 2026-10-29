@@ -13,10 +13,33 @@ a{color:#155a9c;text-decoration:none}
 a:hover{text-decoration:underline}
 header{background:#fff;border-bottom:1px solid #aaa}
 .header-inner{max-width:1100px;margin:auto;min-height:85px;padding:8px 12px;display:flex;align-items:center;justify-content:space-between;gap:15px;flex-wrap:wrap}
-.brand{width:165px;flex-shrink:0}
-.logo-crop{width:165px;height:55px;overflow:hidden;position:relative;display:block}
-.logo-crop img{position:absolute;width:165px;height:165px;max-width:none;top:-55px;left:0}
-.slogan{font-size:10px;color:#777;text-align:center}
+.brand {
+  width: 165px;
+  flex-shrink: 0;
+  text-align: center;
+}
+
+.logo-crop {
+  display: block;
+  width: 165px;
+  height: 75px;
+  overflow: hidden;
+}
+
+.logo-crop img {
+  display: block;
+  width: 165px;
+  height: 75px;
+  object-fit: contain;
+  object-position: center;
+}
+
+.slogan {
+  font-size: 10px;
+  color: #777;
+  text-align: center;
+  margin-top: 2px;
+}
 nav{background:linear-gradient(#397dbb,#20558d);border-bottom:2px solid #153e6b}
 .nav-inner{max-width:1100px;margin:auto;display:flex;flex-wrap:wrap}
 nav a{padding:12px 20px;color:white;font-weight:bold;border-right:1px solid #174b7e}
