@@ -155,13 +155,70 @@ button {
 }
 
 button:hover { background: #dce9f7; }
+button:disabled { opacity: .5; cursor: wait; }
 
 .status {
   margin-top: 12px;
   font-weight: bold;
 }
 
+.video-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0,1fr));
+  gap: 18px;
+}
+
+.video-card {
+  min-width: 0;
+  border: 1px solid #ddd;
+  padding: 10px;
+  background: #fafafa;
+}
+
+.video-thumbnail {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 115px;
+  background: linear-gradient(135deg,#aec5dc,#416e9e);
+  color: white;
+  font-size: 34px;
+  border: 1px solid #999;
+  margin-bottom: 9px;
+}
+
+.video-title {
+  font-weight: bold;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.video-details {
+  color: #777;
+  font-size: 11px;
+  line-height: 1.7;
+  margin-top: 5px;
+}
+
+.delete-button {
+  color: #a40000;
+  margin-top: 10px;
+}
+
+.empty {
+  color: #777;
+  padding: 10px 0;
+}
+
 [hidden] { display: none !important; }
+
+@media(max-width:750px) {
+  .video-grid { grid-template-columns: repeat(2,1fr); }
+}
+
+@media(max-width:420px) {
+  .video-grid { grid-template-columns: 1fr; }
+}
 </style>
 </head>
 
@@ -179,8 +236,8 @@ button:hover { background: #dce9f7; }
       </span>
 
       <span data-auth-user hidden>
-        <span data-username></span> |
-        <button data-logout>Log Out</button>
+        Welcome, <span data-username></span> |
+        <button type="button" data-logout>Log Out</button>
       </span>
     </div>
   </div>
@@ -191,6 +248,7 @@ button:hover { background: #dce9f7; }
     <a href="index.html">Home</a>
     <a href="index.html#featured">Videos</a>
     <a href="channel.html">My Channel</a>
+    <a href="upload.html">Upload</a>
   </div>
 </nav>
 
@@ -254,14 +312,18 @@ button:hover { background: #dce9f7; }
 
   <section class="panel">
     <div class="panel-title">My Videos</div>
+
     <div class="panel-content">
-      You haven't uploaded any videos yet.
+      <p id="videoStatus">Loading your videos...</p>
+      <div class="video-grid" id="myVideoGrid"></div>
     </div>
   </section>
 
 </div>
 
 <script>
+let currentUser = null;
+
 async function loadChannel() {
   const { data: authData, error: authError } =
     await supabaseClient.auth.getUser();
@@ -269,10 +331,21 @@ async function loadChannel() {
   const user = authData.user;
 
   if (authError || !user) {
+    currentUser = null;
+
     document.getElementById("channelName").textContent =
       "Log in to view your channel.";
+
+    document.getElementById("editorPanel").hidden = true;
+    document.getElementById("myVideoGrid").replaceChildren();
+
+    document.getElementById("videoStatus").textContent =
+      "Log in to see your uploaded videos.";
+
     return;
   }
+
+  currentUser = user;
 
   const { data: profile, error } = await supabaseClient
     .from("profiles")
@@ -283,31 +356,207 @@ async function loadChannel() {
   if (error) {
     document.getElementById("channelName").textContent =
       "Unable to load channel.";
+  } else {
+    const name = profile.display_name || "HubHill User";
+
+    document.getElementById("channelName").textContent = name;
+    document.getElementById("channelUsername").textContent =
+      profile.username ? "@" + profile.username : "No username set";
+
+    document.getElementById("channelBio").textContent =
+      profile.bio || "No channel description yet.";
+
+    document.getElementById("avatar").textContent =
+      name.charAt(0).toUpperCase();
+
+    document.getElementById("usernameInput").value =
+      profile.username || "";
+
+    document.getElementById("displayInput").value =
+      profile.display_name || "";
+
+    document.getElementById("bioInput").value =
+      profile.bio || "";
+
+    document.getElementById("editorPanel").hidden = false;
+  }
+
+  await loadMyVideos(user.id);
+}
+
+async function loadMyVideos(userID) {
+  const status = document.getElementById("videoStatus");
+  const grid = document.getElementById("myVideoGrid");
+
+  status.textContent = "Loading your videos...";
+  grid.replaceChildren();
+
+  const { data: videos, error } = await supabaseClient
+    .from("videos")
+    .select("id,title,category,views,created_at,storage_key")
+    .eq("user_id", userID)
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    status.textContent = "Error: " + error.message;
     return;
   }
 
-  const name = profile.display_name || "HubHill User";
+  if (!videos || !videos.length) {
+    status.textContent = "You haven't uploaded any videos yet.";
+    return;
+  }
 
-  document.getElementById("channelName").textContent = name;
-  document.getElementById("channelUsername").textContent =
-    profile.username ? "@" + profile.username : "No username set";
+  status.textContent = "";
 
-  document.getElementById("channelBio").textContent =
-    profile.bio || "No channel description yet.";
+  videos.forEach(video => {
+    const card = document.createElement("div");
+    card.className = "video-card";
 
-  document.getElementById("avatar").textContent =
-    name.charAt(0).toUpperCase();
+    const thumbnail = document.createElement("a");
+    thumbnail.className = "video-thumbnail";
+    thumbnail.href = "watch.html?id=" +
+      encodeURIComponent(video.id);
+    thumbnail.textContent = "▶";
 
-  document.getElementById("usernameInput").value =
-    profile.username || "";
+    const title = document.createElement("div");
+    title.className = "video-title";
 
-  document.getElementById("displayInput").value =
-    profile.display_name || "";
+    const titleLink = document.createElement("a");
+    titleLink.href = thumbnail.href;
+    titleLink.textContent = video.title;
+    title.appendChild(titleLink);
 
-  document.getElementById("bioInput").value =
-    profile.bio || "";
+    const details = document.createElement("div");
+    details.className = "video-details";
+    details.textContent =
+      "Category: " + video.category +
+      " | Views: " + (video.views || 0);
 
-  document.getElementById("editorPanel").hidden = false;
+    const watchLink = document.createElement("a");
+    watchLink.href = thumbnail.href;
+    watchLink.textContent = "Watch Video";
+
+    const deleteButton = document.createElement("button");
+    deleteButton.className = "delete-button";
+    deleteButton.textContent = "Delete Video";
+
+    deleteButton.addEventListener("click", async () => {
+      await deleteVideo(video, deleteButton);
+    });
+
+    card.append(
+      thumbnail,
+      title,
+      details,
+      watchLink,
+      document.createElement("br"),
+      deleteButton
+    );
+
+    grid.appendChild(card);
+  });
+}
+
+async function deleteVideo(video, button) {
+  if (!currentUser) {
+    alert("Please log in first.");
+    return;
+  }
+
+  const confirmed = confirm(
+    "Permanently delete \"" + video.title + "\"?\n\n" +
+    "This will remove the video file and its information. " +
+    "This cannot be undone."
+  );
+
+  if (!confirmed) return;
+
+  button.disabled = true;
+  button.textContent = "Deleting...";
+
+  try {
+    const { data: authData, error: authError } =
+      await supabaseClient.auth.getUser();
+
+    if (authError || !authData.user) {
+      throw new Error("Please log in again.");
+    }
+
+    const user = authData.user;
+
+    if (user.id !== currentUser.id) {
+      throw new Error("Account changed. Refresh the page.");
+    }
+
+    const { data: record, error: recordError } =
+      await supabaseClient
+        .from("videos")
+        .select("id,user_id,storage_key")
+        .eq("id", video.id)
+        .eq("user_id", user.id)
+        .single();
+
+    if (recordError || !record) {
+      throw new Error("Video not found or not owned by you.");
+    }
+
+    const expectedPrefix = user.id + "/";
+
+    if (!record.storage_key.startsWith(expectedPrefix)) {
+      throw new Error("Invalid video storage path.");
+    }
+
+    // Delete the actual stored file first.
+    const { data: removedFiles, error: storageError } =
+      await supabaseClient.storage
+        .from("hubhill-videos")
+        .remove([record.storage_key]);
+
+    if (storageError) {
+      throw storageError;
+    }
+
+    // Supabase can return success even if no object was removed.
+    if (!removedFiles || !removedFiles.some(
+      file => file.name === record.storage_key ||
+              file.name === record.storage_key.split("/").pop()
+    )) {
+      throw new Error(
+        "Storage did not confirm file deletion. " +
+        "Check Supabase Storage before retrying."
+      );
+    }
+
+    // Remove the database record after storage deletion.
+    const { data: deletedRows, error: databaseError } =
+      await supabaseClient
+        .from("videos")
+        .delete()
+        .eq("id", record.id)
+        .eq("user_id", user.id)
+        .select("id");
+
+    if (databaseError) {
+      throw databaseError;
+    }
+
+    if (!deletedRows || !deletedRows.length) {
+      throw new Error(
+        "File removed, but the database did not confirm deletion."
+      );
+    }
+
+    alert("Video permanently deleted!");
+
+    await loadMyVideos(user.id);
+
+  } catch (error) {
+    alert("Deletion failed: " + error.message);
+
+    button.disabled = false;
+    button.textContent = "Delete Video";
+  }
 }
 
 document.getElementById("profileForm").addEventListener(
@@ -359,7 +608,9 @@ document.getElementById("profileForm").addEventListener(
     } else {
       status.textContent = "Channel saved successfully!";
       status.style.color = "#176b35";
+
       await loadChannel();
+      await updateAuthUI();
     }
 
     button.disabled = false;
@@ -367,6 +618,10 @@ document.getElementById("profileForm").addEventListener(
 );
 
 document.addEventListener("DOMContentLoaded", loadChannel);
+
+supabaseClient.auth.onAuthStateChange(() => {
+  setTimeout(loadChannel, 0);
+});
 </script>
 
 </body>
