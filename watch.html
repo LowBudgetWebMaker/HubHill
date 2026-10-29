@@ -378,6 +378,34 @@ viewElement.textContent=
 " | Added: "+formatDate(video.created_at);
 
 setVideoSource(storageData.publicUrl);
+  
+// Increase views when a real video starts playing.
+// Count only once per page visit.
+let viewRecorded = false;
+
+player.addEventListener("playing", async () => {
+  if (viewRecorded) return;
+
+  viewRecorded = true;
+
+  const { data: newViews, error: viewError } =
+    await supabaseClient.rpc("increment_video_views", {
+      p_video_id: id
+    });
+
+  if (viewError) {
+    viewRecorded = false;
+    console.error("View counter error:", viewError.message);
+    return;
+  }
+
+  if (newViews !== null) {
+    viewElement.textContent =
+      "Views: " + newViews +
+      " | Added: " + formatDate(video.created_at);
+  }
+});
+
 
 const {data:profile}=await supabaseClient
 .from("profiles")
