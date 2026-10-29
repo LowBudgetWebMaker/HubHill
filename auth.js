@@ -36,9 +36,10 @@ function closeAuth() {
   document.getElementById("authModal").hidden = true;
 }
 
+
 async function updateAuthUI() {
-  const { data } = await supabaseClient.auth.getUser();
-  const user = data.user;
+  const { data, error } = await supabaseClient.auth.getUser();
+  const user = error ? null : data.user;
 
   document.querySelectorAll("[data-auth-guest]").forEach(el => {
     el.hidden = !!user;
@@ -48,13 +49,24 @@ async function updateAuthUI() {
     el.hidden = !user;
   });
 
-  document.querySelectorAll("[data-username]").forEach(el => {
-    el.textContent = user
-      ? user.email.split("@")[0]
-      : "";
-  });
+  if (!user) return;
 
-  if (user) closeAuth();
+  let channelName = user.email.split("@")[0];
+
+  const { data: profile, error: profileError } =
+    await supabaseClient
+      .from("profiles")
+      .select("display_name")
+      .eq("id", user.id)
+      .single();
+
+  if (!profileError && profile && profile.display_name) {
+    channelName = profile.display_name;
+  }
+
+  document.querySelectorAll("[data-username]").forEach(el => {
+    el.textContent = channelName;
+  });
 }
 
 async function signOutHubHill() {
