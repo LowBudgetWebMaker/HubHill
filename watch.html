@@ -43,7 +43,7 @@ button:disabled{opacity:.5;cursor:not-allowed}
 .related-info{min-width:0}
 .related-info p{font-size:11px;color:#777;margin:5px 0}
 .related-info a{font-weight:bold;overflow-wrap:anywhere}
-textarea{width:100%;min-height:80px;padding:8px;border:1px solid #aaa;resize:vertical}
+textarea{width:100%;min-height:80px;padding:8px;border:1px solid #aaa;resize:vertical;font:13px Arial,sans-serif}
 #description{white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.6}
 #category{font-size:12px;color:#777;margin-top:12px}
 #loadingMessage{margin:12px 0;color:#666}
@@ -60,6 +60,22 @@ footer{text-align:center;padding:25px;color:#777;border-top:1px solid #ccc}
 #ratingStatus{font-size:12px;margin-top:8px}
 #favoriteButton.active{color:#a36b00;background:#fff0bf}
 #actionStatus{font-size:12px;margin-top:8px}
+
+/* Comments */
+.comment-form{background:#f5f8fc;border:1px solid #c8d6e4;padding:12px;margin-bottom:18px}
+.comment-form textarea{min-height:85px}
+.comment-form-bottom{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:7px}
+.comment-status{font-size:12px;color:#666}
+.comment-list{margin-top:12px}
+.comment{padding:13px 5px;border-bottom:1px solid #ddd}
+.comment:first-child{border-top:1px solid #ddd}
+.comment-header{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.comment-author{font-weight:bold;color:#245b91}
+.comment-date{font-size:11px;color:#888}
+.comment-text{margin:9px 0;white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.5}
+.comment-delete{font-size:11px;padding:4px 9px;color:#a22}
+.comment-count{color:#777;font-size:12px;margin-bottom:12px}
+#commentMessage{color:#666;line-height:1.6}
 [hidden]{display:none!important}
 @media(max-width:750px){.container{grid-template-columns:1fr}}
 </style>
@@ -97,7 +113,7 @@ Welcome,
 <a href="index.html#categories">Categories</a>
 <a href="channel.html">My Channel</a>
 <a href="upload.html">Upload</a>
-  <a href="favorites.html">My Favorites</a>
+<a href="favorites.html">My Favorites</a>
 </div>
 </nav>
 
@@ -159,12 +175,36 @@ The original HubHill examples use a sample video.
 </section>
 
 <section class="panel">
-<div class="panel-title">Comments</div>
+<div class="panel-title">Comments (<span id="commentCount">0</span>)</div>
 <div class="panel-content">
-<p>Join the conversation!</p>
-<textarea placeholder="Write a comment..." disabled></textarea>
-<p><button disabled>Post Comment</button></p>
-<div class="notice">Comments are coming soon!</div>
+
+<div id="commentsArea" hidden>
+<div class="comment-form">
+<strong>Leave a Comment</strong>
+<p id="commentLoginNotice" class="comment-status"></p>
+
+<textarea
+id="commentInput"
+maxlength="1000"
+placeholder="Write a comment..."
+disabled></textarea>
+
+<div class="comment-form-bottom">
+<span class="comment-status" id="characterCount">0 / 1000 characters</span>
+<button id="postCommentButton" type="button" disabled>Post Comment</button>
+</div>
+<p id="commentStatus" class="comment-status"></p>
+</div>
+
+<div id="commentList" class="comment-list"></div>
+<p id="commentMessage">Loading comments...</p>
+<button id="loadMoreComments" type="button" hidden>Load More Comments</button>
+</div>
+
+<div id="demoCommentsNotice" class="notice" hidden>
+Comments are only available on uploaded HubHill videos.
+</div>
+
 </div>
 </section>
 
@@ -300,6 +340,7 @@ descriptionElement.textContent=video.description;
 categoryElement.textContent="Demonstration Video";
 
 document.getElementById("demoNotice").hidden=false;
+document.getElementById("demoCommentsNotice").hidden=false;
 
 setVideoSource(
 "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4"
@@ -361,6 +402,7 @@ document.getElementById("videoActions").hidden=false;
 document.getElementById("favoriteButton").hidden=false;
 
 await initializeRatingsAndFavorites();
+await initializeComments();
 
 }catch(error){
 console.error("Video loading error:",error);
@@ -370,6 +412,8 @@ loadingElement.textContent="Error: "+error.message;
 loadingElement.style.color="#b00020";
 }
 }
+
+/* RATINGS AND FAVORITES */
 
 function showActionMessage(message,isError=false){
 const element=document.getElementById("actionStatus");
@@ -572,6 +616,247 @@ button.disabled=false;
 }
 });
 
+/* COMMENTS */
+
+const commentInput=document.getElementById("commentInput");
+const postCommentButton=document.getElementById("postCommentButton");
+const commentList=document.getElementById("commentList");
+const commentMessage=document.getElementById("commentMessage");
+const commentStatus=document.getElementById("commentStatus");
+const commentCount=document.getElementById("commentCount");
+const loadMoreButton=document.getElementById("loadMoreComments");
+
+const COMMENTS_PER_PAGE=20;
+let commentOffset=0;
+let totalComments=0;
+let commentsBusy=false;
+
+function setCommentStatus(text,isError=false){
+commentStatus.textContent=text;
+commentStatus.style.color=isError?"#b00020":"#176b35";
+}
+
+commentInput.addEventListener("input",()=>{
+document.getElementById("characterCount").textContent=
+commentInput.value.length+" / 1000 characters";
+});
+
+async function initializeComments(){
+document.getElementById("commentsArea").hidden=false;
+
+try{
+const {data,error}=await supabaseClient.auth.getUser();
+if(error)throw error;
+currentUser=data.user||null;
+
+const loginNotice=document.getElementById("commentLoginNotice");
+
+if(currentUser){
+loginNotice.textContent="Posting as a signed-in HubHill user.";
+commentInput.disabled=false;
+postCommentButton.disabled=false;
+}else{
+loginNotice.textContent="Please log in to post a comment.";
+commentInput.disabled=true;
+postCommentButton.disabled=true;
+}
+
+await loadComments(true);
+
+}catch(error){
+commentMessage.textContent="Unable to load comments: "+error.message;
+}
+}
+
+async function loadComments(reset=false){
+if(commentsBusy)return;
+commentsBusy=true;
+
+if(reset){
+commentOffset=0;
+commentList.replaceChildren();
+}
+
+loadMoreButton.disabled=true;
+commentMessage.textContent="Loading comments...";
+
+try{
+const {data:comments,error,count}=await supabaseClient
+.from("video_comments")
+.select("id,user_id,content,created_at",{count:"exact"})
+.eq("video_id",uploadedID)
+.order("created_at",{ascending:false})
+.order("id",{ascending:false})
+.range(commentOffset,commentOffset+COMMENTS_PER_PAGE-1);
+
+if(error)throw error;
+
+totalComments=count||0;
+commentCount.textContent=totalComments;
+
+const rows=comments||[];
+
+if(!rows.length&&reset){
+commentMessage.textContent="No comments yet. Be the first to comment!";
+}else{
+commentMessage.textContent="";
+}
+
+const userIDs=[...new Set(rows.map(c=>c.user_id))];
+const profileMap=new Map();
+
+if(userIDs.length){
+const {data:profiles,error:profileError}=await supabaseClient
+.from("profiles")
+.select("id,username,display_name")
+.in("id",userIDs);
+
+if(profileError){
+console.warn("Comment usernames:",profileError.message);
+}else{
+(profiles||[]).forEach(profile=>{
+profileMap.set(profile.id,profile);
+});
+}
+}
+
+rows.forEach(comment=>{
+renderComment(comment,profileMap.get(comment.user_id));
+});
+
+commentOffset+=rows.length;
+loadMoreButton.hidden=commentOffset>=totalComments;
+
+}catch(error){
+console.error("Comments:",error);
+commentMessage.textContent="Could not load comments: "+error.message;
+}finally{
+commentsBusy=false;
+loadMoreButton.disabled=false;
+}
+}
+
+function renderComment(comment,profile){
+const wrapper=document.createElement("div");
+wrapper.className="comment";
+
+const header=document.createElement("div");
+header.className="comment-header";
+
+const author=document.createElement("a");
+author.className="comment-author";
+author.href="channel.html?user="+encodeURIComponent(comment.user_id);
+author.textContent=
+profile?.display_name||
+profile?.username||
+"HubHill User";
+
+const date=document.createElement("span");
+date.className="comment-date";
+date.textContent=new Date(comment.created_at).toLocaleString();
+
+header.append(author,date);
+
+const content=document.createElement("p");
+content.className="comment-text";
+content.textContent=comment.content;
+
+wrapper.append(header,content);
+
+if(currentUser&&currentUser.id===comment.user_id){
+const deleteButton=document.createElement("button");
+deleteButton.type="button";
+deleteButton.className="comment-delete";
+deleteButton.textContent="Delete";
+
+deleteButton.addEventListener("click",async()=>{
+if(!confirm("Permanently delete this comment?"))return;
+
+deleteButton.disabled=true;
+
+try{
+const {data,error}=await supabaseClient
+.from("video_comments")
+.delete()
+.eq("id",comment.id)
+.eq("user_id",currentUser.id)
+.select("id");
+
+if(error)throw error;
+if(!data||data.length!==1){
+throw new Error("The comment was not deleted.");
+}
+
+await loadComments(true);
+setCommentStatus("Comment deleted.");
+
+}catch(error){
+alert("Could not delete comment: "+error.message);
+deleteButton.disabled=false;
+}
+});
+
+wrapper.appendChild(deleteButton);
+}
+
+commentList.appendChild(wrapper);
+}
+
+postCommentButton.addEventListener("click",async()=>{
+if(!uploadedID)return;
+
+if(!currentUser){
+setCommentStatus("Please log in to post comments.",true);
+return;
+}
+
+const content=commentInput.value.trim();
+
+if(!content){
+setCommentStatus("Please write a comment first.",true);
+return;
+}
+
+if(content.length>1000){
+setCommentStatus("Comments must be 1000 characters or less.",true);
+return;
+}
+
+postCommentButton.disabled=true;
+postCommentButton.textContent="Posting...";
+setCommentStatus("");
+
+try{
+const {error}=await supabaseClient
+.from("video_comments")
+.insert({
+video_id:uploadedID,
+user_id:currentUser.id,
+content:content
+});
+
+if(error)throw error;
+
+commentInput.value="";
+document.getElementById("characterCount").textContent="0 / 1000 characters";
+
+await loadComments(true);
+setCommentStatus("Comment posted successfully!");
+
+}catch(error){
+setCommentStatus("Could not post comment: "+error.message,true);
+}finally{
+postCommentButton.disabled=false;
+postCommentButton.textContent="Post Comment";
+}
+});
+
+loadMoreButton.addEventListener("click",()=>{
+loadComments(false);
+});
+
+/* SHARE BUTTON */
+
 document.getElementById("shareButton")
 .addEventListener("click",async()=>{
 try{
@@ -581,6 +866,8 @@ alert("Video link copied!");
 prompt("Copy this video link:",location.href);
 }
 });
+
+/* PAGE STARTUP */
 
 document.addEventListener("DOMContentLoaded",async()=>{
 if(uploadedID){
