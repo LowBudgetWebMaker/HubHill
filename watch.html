@@ -17,214 +17,51 @@ body{margin:0;background:#e9edf2;color:#333;font:13px Arial,sans-serif}
 a{color:#155a9c;text-decoration:none}
 a:hover{text-decoration:underline}
 header{background:#fff;border-bottom:1px solid #aaa}
-
-.header-inner{
-max-width:1100px;
-margin:auto;
-min-height:78px;
-padding:5px 12px;
-display:flex;
-align-items:center;
-justify-content:space-between;
-gap:20px;
-flex-wrap:wrap;
-}
-
-.brand{
-width:175px;
-height:65px;
-flex-shrink:0;
-text-align:center;
-}
-
-.logo-crop{
-display:block;
-width:175px;
-height:48px;
-overflow:hidden;
-position:relative;
-}
-
-.logo-crop img{
-position:absolute;
-width:175px;
-height:175px;
-max-width:none;
-top:-59px;
-left:0;
-}
-
-.slogan{
-font-size:10px;
-color:#777;
-text-align:center;
-margin-top:1px;
-}
-
-nav{
-background:linear-gradient(#397dbb,#20558d);
-border-bottom:2px solid #153e6b;
-}
-
-.nav-inner{
-max-width:1100px;
-margin:auto;
-display:flex;
-flex-wrap:wrap;
-}
-
-nav a{
-padding:12px 20px;
-color:white;
-font-weight:bold;
-border-right:1px solid #174b7e;
-}
-
-nav a:hover{
-background:#164673;
-text-decoration:none;
-}
-
-.container{
-max-width:1100px;
-margin:20px auto;
-padding:0 12px;
-display:grid;
-grid-template-columns:minmax(0,1fr) 270px;
-gap:18px;
-}
-
-.panel{
-background:white;
-border:1px solid #b8c4d1;
-margin-bottom:15px;
-}
-
-.panel-title{
-padding:10px;
-background:linear-gradient(#eaf3fc,#c8dff4);
-border-bottom:1px solid #b8c4d1;
-color:#245b91;
-font-weight:bold;
-}
-
+.header-inner{max-width:1100px;margin:auto;min-height:78px;padding:5px 12px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.brand{width:175px;height:65px;flex-shrink:0;text-align:center}
+.logo-crop{display:block;width:175px;height:48px;overflow:hidden;position:relative}
+.logo-crop img{position:absolute;width:175px;height:175px;max-width:none;top:-59px;left:0}
+.slogan{font-size:10px;color:#777;text-align:center;margin-top:1px}
+nav{background:linear-gradient(#397dbb,#20558d);border-bottom:2px solid #153e6b}
+.nav-inner{max-width:1100px;margin:auto;display:flex;flex-wrap:wrap}
+nav a{padding:12px 20px;color:white;font-weight:bold;border-right:1px solid #174b7e}
+nav a:hover{background:#164673;text-decoration:none}
+.container{max-width:1100px;margin:20px auto;padding:0 12px;display:grid;grid-template-columns:minmax(0,1fr) 270px;gap:18px}
+.panel{background:white;border:1px solid #b8c4d1;margin-bottom:15px}
+.panel-title{padding:10px;background:linear-gradient(#eaf3fc,#c8dff4);border-bottom:1px solid #b8c4d1;color:#245b91;font-weight:bold}
 .panel-content{padding:14px}
-
-h2{
-font-size:20px;
-margin:0 0 12px;
-overflow-wrap:anywhere;
-}
-
-.player{
-background:#111;
-border:5px solid #555;
-padding:8px;
-}
-
-video{
-display:block;
-width:100%;
-aspect-ratio:4/3;
-background:black;
-}
-
-.video-stats{
-display:flex;
-justify-content:space-between;
-flex-wrap:wrap;
-gap:10px;
-margin-top:14px;
-color:#666;
-}
-
-button{
-background:linear-gradient(white,#ddd);
-border:1px solid #999;
-border-radius:3px;
-padding:7px 12px;
-cursor:pointer;
-font-weight:bold;
-margin:3px;
-}
-
+h2{font-size:20px;margin:0 0 12px;overflow-wrap:anywhere}
+.player{background:#111;border:5px solid #555;padding:8px}
+video{display:block;width:100%;aspect-ratio:4/3;background:black}
+.video-stats{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-top:14px;color:#666}
+button{background:linear-gradient(white,#ddd);border:1px solid #999;border-radius:3px;padding:7px 12px;cursor:pointer;font-weight:bold;margin:3px}
 button:hover{background:#dce9f7}
 button:disabled{opacity:.5;cursor:not-allowed}
-
-.notice{
-background:#fffbe5;
-border:1px solid #e5d493;
-padding:12px;
-line-height:1.6;
-}
-
-.related{
-display:flex;
-gap:10px;
-margin-bottom:15px;
-align-items:flex-start;
-}
-
-.related-thumb{
-background:#416e9e;
-color:white;
-width:100px;
-height:65px;
-display:grid;
-place-items:center;
-font-size:24px;
-flex-shrink:0;
-border:1px solid #999;
-}
-
+.notice{background:#fffbe5;border:1px solid #e5d493;padding:12px;line-height:1.6}
+.related{display:flex;gap:10px;margin-bottom:15px;align-items:flex-start}
+.related-thumb{background:#416e9e;color:white;width:100px;height:65px;display:grid;place-items:center;font-size:24px;flex-shrink:0;border:1px solid #999}
 .related-info{min-width:0}
+.related-info p{font-size:11px;color:#777;margin:5px 0}
+.related-info a{font-weight:bold;overflow-wrap:anywhere}
+textarea{width:100%;min-height:80px;padding:8px;border:1px solid #aaa;resize:vertical}
+#description{white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.6}
+#category{font-size:12px;color:#777;margin-top:12px}
+#loadingMessage{margin:12px 0;color:#666}
+footer{text-align:center;padding:25px;color:#777;border-top:1px solid #ccc}
 
-.related-info p{
-font-size:11px;
-color:#777;
-margin:5px 0;
-}
-
-.related-info a{
-font-weight:bold;
-overflow-wrap:anywhere;
-}
-
-textarea{
-width:100%;
-min-height:80px;
-padding:8px;
-border:1px solid #aaa;
-resize:vertical;
-}
-
-#description{
-white-space:pre-wrap;
-overflow-wrap:anywhere;
-line-height:1.6;
-}
-
-#category{
-font-size:12px;
-color:#777;
-margin-top:12px;
-}
-
-#loadingMessage{
-margin:12px 0;
-color:#666;
-}
-
-footer{
-text-align:center;
-padding:25px;
-color:#777;
-border-top:1px solid #ccc;
-}
-
-@media(max-width:750px){
-.container{grid-template-columns:1fr}
-}
+/* Ratings and favorites */
+.rating-box{margin-top:12px;padding:12px;background:#f5f8fc;border:1px solid #c8d6e4}
+.rating-heading{font-weight:bold;color:#245b91;margin-bottom:7px}
+.stars{display:flex;gap:3px;flex-wrap:wrap}
+.star-button{font-size:27px;color:#aaa;background:none;border:none;padding:2px 5px;margin:0;line-height:1.2}
+.star-button:hover{color:#e0a500;background:none}
+.star-button.selected{color:#e0a500}
+.rating-summary{font-size:12px;color:#666;margin-top:8px}
+#ratingStatus{font-size:12px;margin-top:8px}
+#favoriteButton.active{color:#a36b00;background:#fff0bf}
+#actionStatus{font-size:12px;margin-top:8px}
+[hidden]{display:none!important}
+@media(max-width:750px){.container{grid-template-columns:1fr}}
 </style>
 </head>
 
@@ -232,7 +69,6 @@ border-top:1px solid #ccc;
 
 <header>
 <div class="header-inner">
-
 <div class="brand">
 <a href="index.html" class="logo-crop">
 <img src="HubHill.png" alt="HubHill">
@@ -245,16 +81,12 @@ border-top:1px solid #ccc;
 <a href="#" data-open-auth="signup">Sign Up</a> |
 <a href="#" data-open-auth="login">Log In</a>
 </span>
-
 <span data-auth-user hidden>
 Welcome,
-<a href="channel.html">
-<strong data-username></strong>
-</a> |
+<a href="channel.html"><strong data-username></strong></a> |
 <button type="button" data-logout>Log Out</button>
 </span>
 </div>
-
 </div>
 </header>
 
@@ -269,20 +101,14 @@ Welcome,
 </nav>
 
 <div class="container">
-
 <main>
 
 <section class="panel">
 <div class="panel-content">
-
 <h2 id="videoTitle">Loading video...</h2>
 
 <div class="player">
-<video
-id="videoPlayer"
-controls
-preload="metadata"
-playsinline>
+<video id="videoPlayer" controls preload="metadata" playsinline>
 Your browser does not support video playback.
 </video>
 </div>
@@ -290,351 +116,475 @@ Your browser does not support video playback.
 <p id="loadingMessage">Loading video information...</p>
 
 <div class="video-stats">
-<span>
-From:
-<a href="#" id="uploader">Loading...</a>
-</span>
-
-<span id="viewCount">
-Views: 0
-</span>
+<span>From: <a href="#" id="uploader">Loading...</a></span>
+<span id="viewCount">Views: 0</span>
 </div>
 
 <hr>
 
-<button class="soon">★ Rate Video</button>
-<button id="shareButton">Share</button>
-<button class="soon">Add to Favorites</button>
+<div id="videoActions" hidden>
+<div class="rating-box">
+<div class="rating-heading">Rate This Video</div>
+<div class="stars" id="starButtons">
+<button class="star-button" type="button" data-stars="1" aria-label="1 star">★</button>
+<button class="star-button" type="button" data-stars="2" aria-label="2 stars">★</button>
+<button class="star-button" type="button" data-stars="3" aria-label="3 stars">★</button>
+<button class="star-button" type="button" data-stars="4" aria-label="4 stars">★</button>
+<button class="star-button" type="button" data-stars="5" aria-label="5 stars">★</button>
+</div>
+<div class="rating-summary" id="ratingSummary">Loading ratings...</div>
+<div id="ratingStatus"></div>
+</div>
+</div>
 
+<p>
+<button id="shareButton" type="button">Share</button>
+<button id="favoriteButton" type="button" hidden>☆ Add to Favorites</button>
+</p>
+<div id="actionStatus"></div>
 </div>
 </section>
 
 <section class="panel">
 <div class="panel-title">Video Description</div>
 <div class="panel-content">
-
 <p id="description"></p>
 <p id="category"></p>
-
 <div class="notice" id="demoNotice" hidden>
 This is a demonstration video.
 The original HubHill examples use a sample video.
 </div>
-
 </div>
 </section>
 
 <section class="panel">
 <div class="panel-title">Comments</div>
 <div class="panel-content">
-
 <p>Join the conversation!</p>
-
-<textarea
-placeholder="Write a comment..."
-disabled></textarea>
-
-<p>
-<button disabled>Post Comment</button>
-</p>
-
-<div class="notice">
-Comments are coming soon!
-</div>
-
+<textarea placeholder="Write a comment..." disabled></textarea>
+<p><button disabled>Post Comment</button></p>
+<div class="notice">Comments are coming soon!</div>
 </div>
 </section>
 
 </main>
 
 <aside>
-
 <section class="panel">
 <div class="panel-title">Related Videos</div>
-<div class="panel-content" id="relatedList">
-Loading...
-</div>
+<div class="panel-content" id="relatedList">Loading...</div>
 </section>
 
 <section class="panel">
 <div class="panel-title">About HubHill</div>
 <div class="panel-content">
-
 <strong>Your World. Your Watch.</strong>
-
-<p>
-Discover, watch, and share videos with
-the HubHill community.
-</p>
-
+<p>Discover, watch, and share videos with the HubHill community.</p>
 </div>
 </section>
-
 </aside>
-
 </div>
 
-<footer>
-HubHill &copy; 2026 - Your World. Your Watch.
-</footer>
+<footer>HubHill &copy; 2026 - Your World. Your Watch.</footer>
 
 <script>
-const demoVideos = [
-{
-id:1,
-title:"Welcome to HubHill!",
-user:"HubHill",
-views:120,
-icon:"▶",
-description:"Welcome to HubHill, your classic video-sharing community!"
-},
-{
-id:2,
-title:"My First Video!",
-user:"RetroUser",
-views:84,
-icon:"★",
-description:"My very first video on HubHill!"
-},
-{
-id:3,
-title:"Funny Moments Compilation",
-user:"ComedyFan",
-views:215,
-icon:"☺",
-description:"A collection of funny moments."
-},
-{
-id:4,
-title:"Classic Gaming Adventures",
-user:"GameMaster",
-views:340,
-icon:"✦",
-description:"Join me for some classic gaming adventures!"
-},
-{
-id:5,
-title:"A Day in My Life",
-user:"VideoMaker",
-views:98,
-icon:"☀",
-description:"A little look into my daily life."
-},
-{
-id:6,
-title:"The Internet Is Awesome!",
-user:"WebFan",
-views:157,
-icon:"✿",
-description:"Celebrating the internet and its communities."
-}
+const demoVideos=[
+{id:1,title:"Welcome to HubHill!",user:"HubHill",views:120,icon:"▶",description:"Welcome to HubHill, your classic video-sharing community!"},
+{id:2,title:"My First Video!",user:"RetroUser",views:84,icon:"★",description:"My very first video on HubHill!"},
+{id:3,title:"Funny Moments Compilation",user:"ComedyFan",views:215,icon:"☺",description:"A collection of funny moments."},
+{id:4,title:"Classic Gaming Adventures",user:"GameMaster",views:340,icon:"✦",description:"Join me for some classic gaming adventures!"},
+{id:5,title:"A Day in My Life",user:"VideoMaker",views:98,icon:"☀",description:"A little look into my daily life."},
+{id:6,title:"The Internet Is Awesome!",user:"WebFan",views:157,icon:"✿",description:"Celebrating the internet and its communities."}
 ];
 
-const params = new URLSearchParams(location.search);
-const uploadedID = params.get("id");
-const demoID = Number(params.get("v"));
+const params=new URLSearchParams(location.search);
+const uploadedID=params.get("id");
+const demoID=Number(params.get("v"));
 
-const player = document.getElementById("videoPlayer");
-const titleElement = document.getElementById("videoTitle");
-const uploaderElement = document.getElementById("uploader");
-const viewElement = document.getElementById("viewCount");
-const descriptionElement = document.getElementById("description");
-const categoryElement = document.getElementById("category");
-const loadingElement = document.getElementById("loadingMessage");
-const relatedElement = document.getElementById("relatedList");
+const player=document.getElementById("videoPlayer");
+const titleElement=document.getElementById("videoTitle");
+const uploaderElement=document.getElementById("uploader");
+const viewElement=document.getElementById("viewCount");
+const descriptionElement=document.getElementById("description");
+const categoryElement=document.getElementById("category");
+const loadingElement=document.getElementById("loadingMessage");
+const relatedElement=document.getElementById("relatedList");
 
-function setVideoSource(url) {
-player.src = url;
+let currentUser=null;
+let currentRating=0;
+let isFavorite=false;
+let actionBusy=false;
+
+function setVideoSource(url){
+player.src=url;
 player.load();
 }
 
-function formatDate(dateString) {
-if (!dateString) return "Unknown";
-return new Date(dateString).toLocaleDateString();
+function formatDate(value){
+if(!value)return "Unknown";
+const date=new Date(value);
+return Number.isNaN(date.getTime())?"Unknown":date.toLocaleDateString();
 }
 
-function addRelatedVideo(video, isUploaded) {
-const item = document.createElement("div");
-item.className = "related";
+function addRelatedVideo(video,isUploaded){
+const item=document.createElement("div");
+item.className="related";
 
-const thumb = document.createElement("a");
-thumb.className = "related-thumb";
+const thumb=document.createElement("a");
+thumb.className="related-thumb";
+thumb.href=isUploaded
+?"watch.html?id="+encodeURIComponent(video.id)
+:"watch.html?v="+video.id;
+thumb.textContent=isUploaded?"▶":video.icon;
 
-thumb.href = isUploaded
-? "watch.html?id=" + encodeURIComponent(video.id)
-: "watch.html?v=" + video.id;
+const info=document.createElement("div");
+info.className="related-info";
 
-thumb.textContent = isUploaded ? "▶" : video.icon;
+const link=document.createElement("a");
+link.href=thumb.href;
+link.textContent=video.title;
 
-const info = document.createElement("div");
-info.className = "related-info";
+const details=document.createElement("p");
+details.textContent=isUploaded
+?"Category: "+(video.category||"Uncategorized")
+:"From: "+video.user;
 
-const link = document.createElement("a");
-link.href = thumb.href;
-link.textContent = video.title;
-
-const details = document.createElement("p");
-details.textContent = isUploaded
-? "Category: " + video.category
-: "From: " + video.user;
-
-info.append(link, details);
-item.append(thumb, info);
+info.append(link,details);
+item.append(thumb,info);
 relatedElement.appendChild(item);
 }
 
-async function loadRelatedVideos(excludeID = null) {
-relatedElement.textContent = "";
+async function loadRelatedVideos(excludeID=null){
+relatedElement.textContent="";
 
-try {
-const {data, error} = await supabaseClient
+try{
+const {data,error}=await supabaseClient
 .from("videos")
 .select("id,title,category,created_at")
-.order("created_at", {ascending:false})
+.order("created_at",{ascending:false})
 .limit(12);
 
-if (error) throw error;
+if(error)throw error;
 
-if (data) {
-data.filter(v => v.id !== excludeID)
-.slice(0, 6)
-.forEach(v => addRelatedVideo(v, true));
+(data||[])
+.filter(v=>v.id!==excludeID)
+.slice(0,6)
+.forEach(v=>addRelatedVideo(v,true));
+}catch(error){
+console.error("Related videos:",error.message);
 }
 
-} catch(error) {
-console.error("Related videos:", error.message);
-}
-
-if (!relatedElement.children.length) {
-demoVideos.slice(0, 6).forEach(v => {
-if (!uploadedID && v.id === demoID) return;
-addRelatedVideo(v, false);
+if(!relatedElement.children.length){
+demoVideos.forEach(v=>{
+if(!uploadedID&&v.id===demoID)return;
+addRelatedVideo(v,false);
 });
 }
 
-if (!relatedElement.children.length) {
-relatedElement.textContent = "No related videos available.";
+if(!relatedElement.children.length){
+relatedElement.textContent="No related videos available.";
 }
 }
 
-function showDemoVideo() {
-const video = demoVideos.find(v => v.id === demoID)
-|| demoVideos[0];
+function showDemoVideo(){
+const video=demoVideos.find(v=>v.id===demoID)||demoVideos[0];
 
-document.title = video.title + " - HubHill";
-titleElement.textContent = video.title;
-uploaderElement.textContent = video.user;
-uploaderElement.href = "#";
-viewElement.textContent =
-"Views: " + video.views + " | Added: 2026";
+document.title=video.title+" - HubHill";
+titleElement.textContent=video.title;
+uploaderElement.textContent=video.user;
+uploaderElement.removeAttribute("href");
 
-descriptionElement.textContent = video.description;
-categoryElement.textContent = "Demonstration Video";
+viewElement.textContent="Views: "+video.views+" | Added: 2026";
+descriptionElement.textContent=video.description;
+categoryElement.textContent="Demonstration Video";
 
-document.getElementById("demoNotice").hidden = false;
+document.getElementById("demoNotice").hidden=false;
 
 setVideoSource(
 "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4"
 );
 
-loadingElement.textContent = "";
+loadingElement.textContent="";
 }
 
-async function showUploadedVideo(id) {
-try {
-const {data: video, error} = await supabaseClient
+async function showUploadedVideo(id){
+try{
+const {data:video,error}=await supabaseClient
 .from("videos")
-.select(
-"id,user_id,title,description,category,storage_key,views,created_at"
-)
-.eq("id", id)
+.select("id,user_id,title,description,category,storage_key,views,created_at")
+.eq("id",id)
 .single();
 
-if (error) throw error;
+if(error)throw error;
+if(!video)throw new Error("Video not found.");
 
-if (!video) {
-throw new Error("Video not found.");
-}
-
-const {data: storageData} = supabaseClient.storage
+const {data:storageData}=supabaseClient.storage
 .from("hubhill-videos")
 .getPublicUrl(video.storage_key);
 
-if (!storageData || !storageData.publicUrl) {
+if(!storageData?.publicUrl){
 throw new Error("Could not find video file.");
 }
 
-document.title = video.title + " - HubHill";
-titleElement.textContent = video.title;
+document.title=video.title+" - HubHill";
+titleElement.textContent=video.title;
+descriptionElement.textContent=video.description||"No description provided.";
+categoryElement.textContent="Category: "+(video.category||"Uncategorized");
 
-descriptionElement.textContent =
-video.description || "No description provided.";
-
-categoryElement.textContent =
-"Category: " + video.category;
-
-viewElement.textContent =
-"Views: " + (video.views || 0) +
-" | Added: " + formatDate(video.created_at);
+viewElement.textContent=
+"Views: "+(video.views||0)+
+" | Added: "+formatDate(video.created_at);
 
 setVideoSource(storageData.publicUrl);
 
-const {data: profile} = await supabaseClient
+const {data:profile}=await supabaseClient
 .from("profiles")
 .select("username,display_name")
-.eq("id", video.user_id)
+.eq("id",video.user_id)
 .maybeSingle();
 
-if (profile) {
-uploaderElement.textContent =
-profile.display_name ||
-profile.username ||
-"HubHill User";
+if(profile){
+uploaderElement.textContent=
+profile.display_name||profile.username||"HubHill User";
 
-uploaderElement.href = "channel.html?user=" +
-encodeURIComponent(video.user_id);
-} else {
-uploaderElement.textContent = "HubHill User";
+uploaderElement.href=
+"channel.html?user="+encodeURIComponent(video.user_id);
+}else{
+uploaderElement.textContent="HubHill User";
 uploaderElement.removeAttribute("href");
 }
 
-loadingElement.textContent = "";
+loadingElement.textContent="";
 
-} catch(error) {
-console.error("Video loading error:", error);
+document.getElementById("videoActions").hidden=false;
+document.getElementById("favoriteButton").hidden=false;
 
-titleElement.textContent = "Video unavailable";
-descriptionElement.textContent =
-"This video could not be loaded.";
+await initializeRatingsAndFavorites();
 
-loadingElement.textContent =
-"Error: " + error.message;
-
-loadingElement.style.color = "#b00020";
+}catch(error){
+console.error("Video loading error:",error);
+titleElement.textContent="Video unavailable";
+descriptionElement.textContent="This video could not be loaded.";
+loadingElement.textContent="Error: "+error.message;
+loadingElement.style.color="#b00020";
 }
 }
 
-document.querySelectorAll(".soon").forEach(el => {
-el.addEventListener("click", event => {
-event.preventDefault();
-alert("This HubHill feature is coming soon!");
+function showActionMessage(message,isError=false){
+const element=document.getElementById("actionStatus");
+element.textContent=message;
+element.style.color=isError?"#b00020":"#176b35";
+}
+
+function showRatingMessage(message,isError=false){
+const element=document.getElementById("ratingStatus");
+element.textContent=message;
+element.style.color=isError?"#b00020":"#176b35";
+}
+
+function paintStars(){
+document.querySelectorAll("[data-stars]").forEach(button=>{
+const stars=Number(button.dataset.stars);
+button.classList.toggle("selected",stars<=currentRating);
+button.setAttribute("aria-pressed",String(stars===currentRating));
+button.title=stars+" star"+(stars===1?"":"s");
 });
+}
+
+function paintFavorite(){
+const button=document.getElementById("favoriteButton");
+button.textContent=isFavorite
+?"★ Remove from Favorites"
+:"☆ Add to Favorites";
+button.classList.toggle("active",isFavorite);
+}
+
+async function refreshAverageRating(){
+const {data,error}=await supabaseClient
+.from("video_ratings")
+.select("stars")
+.eq("video_id",uploadedID);
+
+if(error)throw error;
+
+const ratings=data||[];
+const summary=document.getElementById("ratingSummary");
+
+if(!ratings.length){
+summary.textContent="No ratings yet. Be the first!";
+return;
+}
+
+const total=ratings.reduce((sum,item)=>sum+item.stars,0);
+const average=(total/ratings.length).toFixed(1);
+
+summary.textContent=
+"Average: "+average+" / 5 stars | "+
+ratings.length+" rating"+(ratings.length===1?"":"s");
+}
+
+async function initializeRatingsAndFavorites(){
+try{
+const {data,error}=await supabaseClient.auth.getUser();
+if(error)throw error;
+currentUser=data.user||null;
+
+await refreshAverageRating();
+
+if(!currentUser){
+showRatingMessage("Log in to rate this video.");
+showActionMessage("Log in to save this video to your favorites.");
+return;
+}
+
+const [ratingResult,favoriteResult]=await Promise.all([
+supabaseClient
+.from("video_ratings")
+.select("stars")
+.eq("video_id",uploadedID)
+.eq("user_id",currentUser.id)
+.maybeSingle(),
+
+supabaseClient
+.from("video_favorites")
+.select("video_id")
+.eq("video_id",uploadedID)
+.eq("user_id",currentUser.id)
+.maybeSingle()
+]);
+
+if(ratingResult.error)throw ratingResult.error;
+if(favoriteResult.error)throw favoriteResult.error;
+
+currentRating=ratingResult.data?.stars||0;
+isFavorite=!!favoriteResult.data;
+
+paintStars();
+paintFavorite();
+
+if(currentRating){
+showRatingMessage("Your rating: "+currentRating+" / 5 stars.");
+}else{
+showRatingMessage("Choose a star to rate this video.");
+}
+
+showActionMessage(
+isFavorite?"This video is in your favorites.":""
+);
+
+}catch(error){
+console.error("Ratings initialization:",error);
+showRatingMessage("Unable to load ratings: "+error.message,true);
+}
+}
+
+document.querySelectorAll("[data-stars]").forEach(button=>{
+button.addEventListener("click",async()=>{
+if(!uploadedID)return;
+
+if(!currentUser){
+showRatingMessage("Please log in to rate videos.",true);
+return;
+}
+
+if(actionBusy)return;
+
+const stars=Number(button.dataset.stars);
+actionBusy=true;
+
+document.querySelectorAll("[data-stars]").forEach(b=>b.disabled=true);
+
+try{
+const {error}=await supabaseClient
+.from("video_ratings")
+.upsert({
+user_id:currentUser.id,
+video_id:uploadedID,
+stars:stars,
+updated_at:new Date().toISOString()
+},{onConflict:"user_id,video_id"});
+
+if(error)throw error;
+
+currentRating=stars;
+paintStars();
+showRatingMessage("Your "+stars+"-star rating was saved!");
+await refreshAverageRating();
+
+}catch(error){
+showRatingMessage("Rating failed: "+error.message,true);
+}finally{
+actionBusy=false;
+document.querySelectorAll("[data-stars]").forEach(b=>b.disabled=false);
+}
+});
+});
+
+document.getElementById("favoriteButton")
+.addEventListener("click",async()=>{
+if(!uploadedID)return;
+
+if(!currentUser){
+showActionMessage("Please log in to use favorites.",true);
+return;
+}
+
+if(actionBusy)return;
+actionBusy=true;
+
+const button=document.getElementById("favoriteButton");
+button.disabled=true;
+
+try{
+if(isFavorite){
+const {error}=await supabaseClient
+.from("video_favorites")
+.delete()
+.eq("user_id",currentUser.id)
+.eq("video_id",uploadedID);
+
+if(error)throw error;
+
+isFavorite=false;
+showActionMessage("Video removed from your favorites.");
+}else{
+const {error}=await supabaseClient
+.from("video_favorites")
+.upsert({
+user_id:currentUser.id,
+video_id:uploadedID
+},{onConflict:"user_id,video_id"});
+
+if(error)throw error;
+
+isFavorite=true;
+showActionMessage("Video added to your favorites!");
+}
+
+paintFavorite();
+
+}catch(error){
+showActionMessage("Favorites error: "+error.message,true);
+}finally{
+actionBusy=false;
+button.disabled=false;
+}
 });
 
 document.getElementById("shareButton")
-.addEventListener("click", async () => {
-try {
+.addEventListener("click",async()=>{
+try{
 await navigator.clipboard.writeText(location.href);
 alert("Video link copied!");
-} catch {
-prompt("Copy this video link:", location.href);
+}catch{
+prompt("Copy this video link:",location.href);
 }
 });
 
-document.addEventListener("DOMContentLoaded", async () => {
-if (uploadedID) {
+document.addEventListener("DOMContentLoaded",async()=>{
+if(uploadedID){
 await showUploadedVideo(uploadedID);
-} else {
+}else{
 showDemoVideo();
 }
 
