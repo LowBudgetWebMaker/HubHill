@@ -7,10 +7,8 @@
 <title>Watch Video - HubHill</title>
 <link rel="icon" href="HubHill.png" type="image/png">
 <link rel="stylesheet" href="auth.css">
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js" defer></script>
 <script src="auth.js" defer></script>
-
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:#e9edf2;color:#333;font:13px Arial,sans-serif}
@@ -74,13 +72,19 @@ footer{text-align:center;padding:25px;color:#777;border-top:1px solid #ccc}
 .comment-date{font-size:11px;color:#888}
 .comment-text{margin:9px 0;white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.5}
 .comment-delete{font-size:11px;padding:4px 9px;color:#a22}
-.comment-count{color:#777;font-size:12px;margin-bottom:12px}
 #commentMessage{color:#666;line-height:1.6}
+
+/* Subscriptions */
+.subscription-box{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:12px;padding:10px;background:#f5f8fc;border:1px solid #c8d6e4}
+#subscribeButton{background:linear-gradient(#e44d42,#a91f18);color:#fff;border:1px solid #891711;padding:8px 15px}
+#subscribeButton:hover{background:#b92d25}
+#subscribeButton.subscribed{background:linear-gradient(#fff,#ddd);color:#444;border:1px solid #aaa}
+#subscriberCount{color:#666;font-size:12px}
+#subscriptionStatus{font-size:12px}
 [hidden]{display:none!important}
 @media(max-width:750px){.container{grid-template-columns:1fr}}
 </style>
 </head>
-
 <body>
 
 <header>
@@ -91,7 +95,6 @@ footer{text-align:center;padding:25px;color:#777;border-top:1px solid #ccc}
 </a>
 <div class="slogan">Your World. Your Watch.</div>
 </div>
-
 <div class="auth-links">
 <span data-auth-guest>
 <a href="#" data-open-auth="signup">Sign Up</a> |
@@ -123,13 +126,11 @@ Welcome,
 <section class="panel">
 <div class="panel-content">
 <h2 id="videoTitle">Loading video...</h2>
-
 <div class="player">
 <video id="videoPlayer" controls preload="metadata" playsinline>
 Your browser does not support video playback.
 </video>
 </div>
-
 <p id="loadingMessage">Loading video information...</p>
 
 <div class="video-stats">
@@ -137,12 +138,18 @@ Your browser does not support video playback.
 <span id="viewCount">Views: 0</span>
 </div>
 
+<div class="subscription-box" id="subscriptionBox" hidden>
+<button type="button" id="subscribeButton" hidden>Subscribe</button>
+<span id="subscriberCount">0 subscribers</span>
+<span id="subscriptionStatus"></span>
+</div>
+
 <hr>
 
 <div id="videoActions" hidden>
 <div class="rating-box">
 <div class="rating-heading">Rate This Video</div>
-<div class="stars" id="starButtons">
+<div class="stars">
 <button class="star-button" type="button" data-stars="1" aria-label="1 star">★</button>
 <button class="star-button" type="button" data-stars="2" aria-label="2 stars">★</button>
 <button class="star-button" type="button" data-stars="3" aria-label="3 stars">★</button>
@@ -182,20 +189,13 @@ The original HubHill examples use a sample video.
 <div class="comment-form">
 <strong>Leave a Comment</strong>
 <p id="commentLoginNotice" class="comment-status"></p>
-
-<textarea
-id="commentInput"
-maxlength="1000"
-placeholder="Write a comment..."
-disabled></textarea>
-
+<textarea id="commentInput" maxlength="1000" placeholder="Write a comment..." disabled></textarea>
 <div class="comment-form-bottom">
 <span class="comment-status" id="characterCount">0 / 1000 characters</span>
 <button id="postCommentButton" type="button" disabled>Post Comment</button>
 </div>
 <p id="commentStatus" class="comment-status"></p>
 </div>
-
 <div id="commentList" class="comment-list"></div>
 <p id="commentMessage">Loading comments...</p>
 <button id="loadMoreComments" type="button" hidden>Load More Comments</button>
@@ -204,10 +204,8 @@ disabled></textarea>
 <div id="demoCommentsNotice" class="notice" hidden>
 Comments are only available on uploaded HubHill videos.
 </div>
-
 </div>
 </section>
-
 </main>
 
 <aside>
@@ -215,7 +213,6 @@ Comments are only available on uploaded HubHill videos.
 <div class="panel-title">Related Videos</div>
 <div class="panel-content" id="relatedList">Loading...</div>
 </section>
-
 <section class="panel">
 <div class="panel-title">About HubHill</div>
 <div class="panel-content">
@@ -255,6 +252,9 @@ let currentUser=null;
 let currentRating=0;
 let isFavorite=false;
 let actionBusy=false;
+let creatorID=null;
+let isSubscribed=false;
+let subscriptionBusy=false;
 
 function setVideoSource(url){
 player.src=url;
@@ -270,26 +270,21 @@ return Number.isNaN(date.getTime())?"Unknown":date.toLocaleDateString();
 function addRelatedVideo(video,isUploaded){
 const item=document.createElement("div");
 item.className="related";
-
 const thumb=document.createElement("a");
 thumb.className="related-thumb";
 thumb.href=isUploaded
 ?"watch.html?id="+encodeURIComponent(video.id)
 :"watch.html?v="+video.id;
 thumb.textContent=isUploaded?"▶":video.icon;
-
 const info=document.createElement("div");
 info.className="related-info";
-
 const link=document.createElement("a");
 link.href=thumb.href;
 link.textContent=video.title;
-
 const details=document.createElement("p");
 details.textContent=isUploaded
 ?"Category: "+(video.category||"Uncategorized")
 :"From: "+video.user;
-
 info.append(link,details);
 item.append(thumb,info);
 relatedElement.appendChild(item);
@@ -297,16 +292,13 @@ relatedElement.appendChild(item);
 
 async function loadRelatedVideos(excludeID=null){
 relatedElement.textContent="";
-
 try{
 const {data,error}=await supabaseClient
 .from("videos")
 .select("id,title,category,created_at")
 .order("created_at",{ascending:false})
 .limit(12);
-
 if(error)throw error;
-
 (data||[])
 .filter(v=>v.id!==excludeID)
 .slice(0,6)
@@ -314,14 +306,12 @@ if(error)throw error;
 }catch(error){
 console.error("Related videos:",error.message);
 }
-
 if(!relatedElement.children.length){
 demoVideos.forEach(v=>{
 if(!uploadedID&&v.id===demoID)return;
 addRelatedVideo(v,false);
 });
 }
-
 if(!relatedElement.children.length){
 relatedElement.textContent="No related videos available.";
 }
@@ -329,23 +319,16 @@ relatedElement.textContent="No related videos available.";
 
 function showDemoVideo(){
 const video=demoVideos.find(v=>v.id===demoID)||demoVideos[0];
-
 document.title=video.title+" - HubHill";
 titleElement.textContent=video.title;
 uploaderElement.textContent=video.user;
 uploaderElement.removeAttribute("href");
-
 viewElement.textContent="Views: "+video.views+" | Added: 2026";
 descriptionElement.textContent=video.description;
 categoryElement.textContent="Demonstration Video";
-
 document.getElementById("demoNotice").hidden=false;
 document.getElementById("demoCommentsNotice").hidden=false;
-
-setVideoSource(
-"https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4"
-);
-
+setVideoSource("https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4");
 loadingElement.textContent="";
 }
 
@@ -360,6 +343,8 @@ const {data:video,error}=await supabaseClient
 if(error)throw error;
 if(!video)throw new Error("Video not found.");
 
+creatorID=video.user_id;
+
 const {data:storageData}=supabaseClient.storage
 .from("hubhill-videos")
 .getPublicUrl(video.storage_key);
@@ -372,40 +357,31 @@ document.title=video.title+" - HubHill";
 titleElement.textContent=video.title;
 descriptionElement.textContent=video.description||"No description provided.";
 categoryElement.textContent="Category: "+(video.category||"Uncategorized");
-
 viewElement.textContent=
 "Views: "+(video.views||0)+
 " | Added: "+formatDate(video.created_at);
 
 setVideoSource(storageData.publicUrl);
-  
-// Increase views when a real video starts playing.
-// Count only once per page visit.
-let viewRecorded = false;
 
-player.addEventListener("playing", async () => {
-  if (viewRecorded) return;
-
-  viewRecorded = true;
-
-  const { data: newViews, error: viewError } =
-    await supabaseClient.rpc("increment_video_views", {
-      p_video_id: id
-    });
-
-  if (viewError) {
-    viewRecorded = false;
-    console.error("View counter error:", viewError.message);
-    return;
-  }
-
-  if (newViews !== null) {
-    viewElement.textContent =
-      "Views: " + newViews +
-      " | Added: " + formatDate(video.created_at);
-  }
+// Count a view once when playback begins.
+let viewRecorded=false;
+player.addEventListener("playing",async()=>{
+if(viewRecorded)return;
+viewRecorded=true;
+try{
+const {data:newViews,error:viewError}=await supabaseClient
+.rpc("increment_video_views",{p_video_id:id});
+if(viewError)throw viewError;
+if(newViews!==null){
+viewElement.textContent=
+"Views: "+newViews+
+" | Added: "+formatDate(video.created_at);
+}
+}catch(error){
+viewRecorded=false;
+console.error("View counter error:",error.message);
+}
 });
-
 
 const {data:profile}=await supabaseClient
 .from("profiles")
@@ -416,7 +392,6 @@ const {data:profile}=await supabaseClient
 if(profile){
 uploaderElement.textContent=
 profile.display_name||profile.username||"HubHill User";
-
 uploaderElement.href=
 "channel.html?user="+encodeURIComponent(video.user_id);
 }else{
@@ -425,11 +400,12 @@ uploaderElement.removeAttribute("href");
 }
 
 loadingElement.textContent="";
-
 document.getElementById("videoActions").hidden=false;
 document.getElementById("favoriteButton").hidden=false;
+document.getElementById("subscriptionBox").hidden=false;
 
 await initializeRatingsAndFavorites();
+await initializeSubscriptions();
 await initializeComments();
 
 }catch(error){
@@ -440,6 +416,137 @@ loadingElement.textContent="Error: "+error.message;
 loadingElement.style.color="#b00020";
 }
 }
+
+/* SUBSCRIPTIONS */
+
+const subscribeButton=document.getElementById("subscribeButton");
+const subscriberCountElement=document.getElementById("subscriberCount");
+const subscriptionStatus=document.getElementById("subscriptionStatus");
+
+function setSubscriptionStatus(message,isError=false){
+subscriptionStatus.textContent=message;
+subscriptionStatus.style.color=isError?"#b00020":"#176b35";
+}
+
+function paintSubscription(){
+subscribeButton.textContent=isSubscribed?"Subscribed ✓":"Subscribe";
+subscribeButton.classList.toggle("subscribed",isSubscribed);
+}
+
+async function refreshSubscriberCount(){
+const {count,error}=await supabaseClient
+.from("channel_subscriptions")
+.select("subscriber_id",{count:"exact",head:true})
+.eq("channel_id",creatorID);
+
+if(error)throw error;
+
+const number=count||0;
+subscriberCountElement.textContent=
+number+" subscriber"+(number===1?"":"s");
+}
+
+async function initializeSubscriptions(){
+try{
+if(!creatorID)return;
+
+subscribeButton.hidden=true;
+setSubscriptionStatus("");
+
+await refreshSubscriberCount();
+
+const {data,error}=await supabaseClient.auth.getUser();
+if(error)throw error;
+currentUser=data.user||null;
+
+if(currentUser&&currentUser.id===creatorID){
+setSubscriptionStatus("This is your channel.");
+return;
+}
+
+subscribeButton.hidden=false;
+
+if(!currentUser){
+isSubscribed=false;
+paintSubscription();
+setSubscriptionStatus("Log in to subscribe.");
+return;
+}
+
+const {data:existing,error:existingError}=await supabaseClient
+.from("channel_subscriptions")
+.select("channel_id")
+.eq("subscriber_id",currentUser.id)
+.eq("channel_id",creatorID)
+.maybeSingle();
+
+if(existingError)throw existingError;
+
+isSubscribed=!!existing;
+paintSubscription();
+
+}catch(error){
+setSubscriptionStatus("Subscription error: "+error.message,true);
+}
+}
+
+subscribeButton.addEventListener("click",async()=>{
+if(subscriptionBusy||!creatorID)return;
+
+if(!currentUser){
+setSubscriptionStatus("Please log in to subscribe.",true);
+return;
+}
+
+if(currentUser.id===creatorID){
+setSubscriptionStatus("You cannot subscribe to yourself.",true);
+return;
+}
+
+subscriptionBusy=true;
+subscribeButton.disabled=true;
+setSubscriptionStatus("");
+
+try{
+if(isSubscribed){
+const {data,error}=await supabaseClient
+.from("channel_subscriptions")
+.delete()
+.eq("subscriber_id",currentUser.id)
+.eq("channel_id",creatorID)
+.select("channel_id");
+
+if(error)throw error;
+if(!data||data.length!==1){
+throw new Error("Subscription was not removed.");
+}
+
+isSubscribed=false;
+setSubscriptionStatus("Unsubscribed successfully.");
+}else{
+const {error}=await supabaseClient
+.from("channel_subscriptions")
+.insert({
+subscriber_id:currentUser.id,
+channel_id:creatorID
+});
+
+if(error)throw error;
+
+isSubscribed=true;
+setSubscriptionStatus("Subscribed successfully!");
+}
+
+paintSubscription();
+await refreshSubscriberCount();
+
+}catch(error){
+setSubscriptionStatus("Subscription failed: "+error.message,true);
+}finally{
+subscriptionBusy=false;
+subscribeButton.disabled=false;
+}
+});
 
 /* RATINGS AND FAVORITES */
 
@@ -511,15 +618,13 @@ return;
 }
 
 const [ratingResult,favoriteResult]=await Promise.all([
-supabaseClient
-.from("video_ratings")
+supabaseClient.from("video_ratings")
 .select("stars")
 .eq("video_id",uploadedID)
 .eq("user_id",currentUser.id)
 .maybeSingle(),
 
-supabaseClient
-.from("video_favorites")
+supabaseClient.from("video_favorites")
 .select("video_id")
 .eq("video_id",uploadedID)
 .eq("user_id",currentUser.id)
@@ -531,7 +636,6 @@ if(favoriteResult.error)throw favoriteResult.error;
 
 currentRating=ratingResult.data?.stars||0;
 isFavorite=!!favoriteResult.data;
-
 paintStars();
 paintFavorite();
 
@@ -554,17 +658,14 @@ showRatingMessage("Unable to load ratings: "+error.message,true);
 document.querySelectorAll("[data-stars]").forEach(button=>{
 button.addEventListener("click",async()=>{
 if(!uploadedID)return;
-
 if(!currentUser){
 showRatingMessage("Please log in to rate videos.",true);
 return;
 }
-
 if(actionBusy)return;
 
 const stars=Number(button.dataset.stars);
 actionBusy=true;
-
 document.querySelectorAll("[data-stars]").forEach(b=>b.disabled=true);
 
 try{
@@ -596,15 +697,13 @@ document.querySelectorAll("[data-stars]").forEach(b=>b.disabled=false);
 document.getElementById("favoriteButton")
 .addEventListener("click",async()=>{
 if(!uploadedID)return;
-
 if(!currentUser){
 showActionMessage("Please log in to use favorites.",true);
 return;
 }
-
 if(actionBusy)return;
-actionBusy=true;
 
+actionBusy=true;
 const button=document.getElementById("favoriteButton");
 button.disabled=true;
 
@@ -617,7 +716,6 @@ const {error}=await supabaseClient
 .eq("video_id",uploadedID);
 
 if(error)throw error;
-
 isFavorite=false;
 showActionMessage("Video removed from your favorites.");
 }else{
@@ -629,7 +727,6 @@ video_id:uploadedID
 },{onConflict:"user_id,video_id"});
 
 if(error)throw error;
-
 isFavorite=true;
 showActionMessage("Video added to your favorites!");
 }
@@ -721,7 +818,6 @@ if(error)throw error;
 
 totalComments=count||0;
 commentCount.textContent=totalComments;
-
 const rows=comments||[];
 
 if(!rows.length&&reset){
@@ -782,13 +878,11 @@ profile?.username||
 const date=document.createElement("span");
 date.className="comment-date";
 date.textContent=new Date(comment.created_at).toLocaleString();
-
 header.append(author,date);
 
 const content=document.createElement("p");
 content.className="comment-text";
 content.textContent=comment.content;
-
 wrapper.append(header,content);
 
 if(currentUser&&currentUser.id===comment.user_id){
@@ -799,7 +893,6 @@ deleteButton.textContent="Delete";
 
 deleteButton.addEventListener("click",async()=>{
 if(!confirm("Permanently delete this comment?"))return;
-
 deleteButton.disabled=true;
 
 try{
@@ -867,7 +960,6 @@ if(error)throw error;
 
 commentInput.value="";
 document.getElementById("characterCount").textContent="0 / 1000 characters";
-
 await loadComments(true);
 setCommentStatus("Comment posted successfully!");
 
@@ -903,10 +995,8 @@ await showUploadedVideo(uploadedID);
 }else{
 showDemoVideo();
 }
-
 await loadRelatedVideos(uploadedID);
 });
 </script>
-
 </body>
 </html>
