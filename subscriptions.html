@@ -1,0 +1,230 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>My Subscriptions - HubHill</title>
+<link rel="icon" href="HubHill.png" type="image/png">
+<link rel="stylesheet" href="auth.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js" defer></script>
+<script src="auth.js" defer></script>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#e9edf2;color:#333;font:13px Arial,sans-serif}
+a{color:#155a9c;text-decoration:none}
+a:hover{text-decoration:underline}
+header{background:#fff;border-bottom:1px solid #aaa}
+.header-inner{max-width:1100px;margin:auto;min-height:78px;padding:5px 12px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.brand{width:175px;height:65px;flex-shrink:0;text-align:center}
+.logo-crop{display:block;width:175px;height:48px;overflow:hidden;position:relative}
+.logo-crop img{position:absolute;width:175px;height:175px;max-width:none;top:-59px;left:0}
+.slogan{font-size:10px;color:#777;text-align:center;margin-top:1px}
+nav{background:linear-gradient(#397dbb,#20558d);border-bottom:2px solid #153e6b}
+.nav-inner{max-width:1100px;margin:auto;display:flex;flex-wrap:wrap}
+nav a{padding:12px 20px;color:white;font-weight:bold;border-right:1px solid #174b7e}
+nav a:hover{background:#164673;text-decoration:none}
+.container{max-width:1100px;margin:20px auto;padding:0 12px}
+.panel{background:#fff;border:1px solid #b8c4d1}
+.panel-title{padding:11px;background:linear-gradient(#eaf3fc,#c8dff4);border-bottom:1px solid #b8c4d1;color:#245b91;font-weight:bold;font-size:15px}
+.panel-content{padding:15px}
+.channel{display:flex;align-items:center;gap:14px;padding:15px 5px;border-bottom:1px solid #ddd;flex-wrap:wrap}
+.channel:last-child{border-bottom:0}
+.avatar{width:65px;height:65px;display:grid;place-items:center;background:#467cb0;border:1px solid #285781;color:white;font-size:30px;font-weight:bold;flex-shrink:0}
+.channel-info{flex:1;min-width:150px}
+.channel-info a{font-size:15px;font-weight:bold}
+.channel-info p{font-size:12px;color:#777;margin:7px 0}
+button{background:linear-gradient(white,#ddd);border:1px solid #999;border-radius:3px;padding:8px 13px;cursor:pointer;font-weight:bold}
+button:hover{background:#dce9f7}
+button:disabled{opacity:.5;cursor:not-allowed}
+.unsubscribe{color:#a22}
+.notice{background:#fffbe5;border:1px solid #e5d493;padding:12px;line-height:1.6}
+#status{color:#666}
+footer{text-align:center;padding:25px;color:#777;border-top:1px solid #ccc;margin-top:25px}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+
+<header>
+<div class="header-inner">
+<div class="brand">
+<a href="index.html" class="logo-crop">
+<img src="HubHill.png" alt="HubHill">
+</a>
+<div class="slogan">Your World. Your Watch.</div>
+</div>
+<div class="auth-links">
+<span data-auth-guest>
+<a href="#" data-open-auth="signup">Sign Up</a> |
+<a href="#" data-open-auth="login">Log In</a>
+</span>
+<span data-auth-user hidden>
+Welcome,
+<a href="channel.html"><strong data-username></strong></a> |
+<button type="button" data-logout>Log Out</button>
+</span>
+</div>
+</div>
+</header>
+
+<nav>
+<div class="nav-inner">
+<a href="index.html">Home</a>
+<a href="index.html#featured">Videos</a>
+<a href="index.html#categories">Categories</a>
+<a href="channel.html">My Channel</a>
+<a href="upload.html">Upload</a>
+<a href="favorites.html">My Favorites</a>
+<a href="subscriptions.html">My Subscriptions</a>
+</div>
+</nav>
+
+<div class="container">
+<section class="panel">
+<div class="panel-title">My Subscriptions (<span id="subscriptionCount">0</span>)</div>
+<div class="panel-content">
+<p id="status">Loading your subscriptions...</p>
+<div id="channelList"></div>
+</div>
+</section>
+</div>
+
+<footer>HubHill &copy; 2026 - Your World. Your Watch.</footer>
+
+<script>
+const statusElement=document.getElementById("status");
+const channelList=document.getElementById("channelList");
+const subscriptionCount=document.getElementById("subscriptionCount");
+
+let currentUser=null;
+
+async function loadSubscriptions(){
+channelList.replaceChildren();
+statusElement.textContent="Loading your subscriptions...";
+
+try{
+const {data:authData,error:authError}=await supabaseClient.auth.getUser();
+if(authError)throw authError;
+
+currentUser=authData.user||null;
+
+if(!currentUser){
+statusElement.textContent="Please log in to view your subscriptions.";
+subscriptionCount.textContent="0";
+return;
+}
+
+const {data:subscriptions,error}=await supabaseClient
+.from("channel_subscriptions")
+.select("channel_id,created_at")
+.eq("subscriber_id",currentUser.id)
+.order("created_at",{ascending:false});
+
+if(error)throw error;
+
+const rows=subscriptions||[];
+subscriptionCount.textContent=rows.length;
+
+if(!rows.length){
+statusElement.textContent="You haven't subscribed to any channels yet.";
+return;
+}
+
+const channelIDs=rows.map(row=>row.channel_id);
+
+const {data:profiles,error:profileError}=await supabaseClient
+.from("profiles")
+.select("id,username,display_name")
+.in("id",channelIDs);
+
+if(profileError)throw profileError;
+
+const profileMap=new Map(
+(profiles||[]).map(profile=>[profile.id,profile])
+);
+
+const {data:subscriberRows,error:countError}=await supabaseClient
+.from("channel_subscriptions")
+.select("channel_id")
+.in("channel_id",channelIDs);
+
+if(countError)throw countError;
+
+const counts=new Map();
+(subscriberRows||[]).forEach(row=>{
+counts.set(row.channel_id,(counts.get(row.channel_id)||0)+1);
+});
+
+statusElement.textContent="";
+
+rows.forEach(row=>{
+const profile=profileMap.get(row.channel_id);
+const name=profile?.display_name||profile?.username||"HubHill User";
+const count=counts.get(row.channel_id)||0;
+
+const item=document.createElement("div");
+item.className="channel";
+
+const avatar=document.createElement("div");
+avatar.className="avatar";
+avatar.textContent=name.charAt(0).toUpperCase();
+
+const info=document.createElement("div");
+info.className="channel-info";
+
+const link=document.createElement("a");
+link.href="channel.html?user="+encodeURIComponent(row.channel_id);
+link.textContent=name;
+
+const details=document.createElement("p");
+details.textContent=count+" subscriber"+(count===1?"":"s");
+
+info.append(link,details);
+
+const button=document.createElement("button");
+button.type="button";
+button.className="unsubscribe";
+button.textContent="Unsubscribe";
+
+button.addEventListener("click",async()=>{
+if(!confirm("Unsubscribe from "+name+"?"))return;
+
+button.disabled=true;
+
+try{
+const {data:deleted,error:deleteError}=await supabaseClient
+.from("channel_subscriptions")
+.delete()
+.eq("subscriber_id",currentUser.id)
+.eq("channel_id",row.channel_id)
+.select("channel_id");
+
+if(deleteError)throw deleteError;
+if(!deleted||deleted.length!==1){
+throw new Error("Subscription could not be removed.");
+}
+
+await loadSubscriptions();
+
+}catch(error){
+alert("Unsubscribe failed: "+error.message);
+button.disabled=false;
+}
+});
+
+item.append(avatar,info,button);
+channelList.appendChild(item);
+});
+
+}catch(error){
+console.error("Subscriptions:",error);
+statusElement.textContent="Could not load subscriptions: "+error.message;
+}
+}
+
+document.addEventListener("DOMContentLoaded",loadSubscriptions);
+</script>
+
+</body>
+</html>
