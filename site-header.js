@@ -171,18 +171,6 @@
       );
     }
 
-    const favicon = document.querySelector('link[rel="icon"]');
-
-    if (favicon) {
-      favicon.href = "image.png";
-      favicon.type = "image/png";
-    } else {
-      const link = document.createElement("link");
-      link.rel = "icon";
-      link.href = "image.png";
-      link.type = "image/png";
-      document.head.appendChild(link);
-    }
   }
 
   if (document.readyState === "loading") {
