@@ -1,144 +1,89 @@
 
-/*
-  HubHill Shared Header and Navigation
-  Used by:
-  index.html
-  watch.html
-  channel.html
-  favorites.html
-  subscriptions.html
-  upload.html
-*/
-
 (function () {
   "use strict";
 
-  const STYLE_ID = "hubhill-shared-header-style";
-
-  const styles = `
-    .hubhill-shared-header {
-      background: #fff;
-      border-bottom: 1px solid #aaa;
-    }
-
-    .hubhill-shared-header .header-inner {
-      max-width: 1100px;
-      min-height: 92px;
-      height: auto;
-      margin: auto;
-      padding: 8px 12px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      flex-wrap: wrap;
-    }
-
-    .hubhill-shared-logo {
-      display: block;
-      width: 95px;
-      max-width: 95px;
-      height: auto;
-      line-height: 0;
-      flex-shrink: 0;
-    }
-
-    .hubhill-shared-logo img {
-      position: static !important;
-      display: block;
-      width: 100% !important;
-      height: auto !important;
-      max-width: 100% !important;
-      object-fit: contain !important;
-      top: auto !important;
-      left: auto !important;
-    }
-
-    .hubhill-shared-header .auth-links {
-      margin-left: auto;
-    }
-
-    .hubhill-shared-nav {
-      background: linear-gradient(#397dbb, #20558d);
-      border-bottom: 2px solid #153e6b;
-    }
-
-    .hubhill-shared-nav .nav-inner {
-      max-width: 1100px;
-      margin: auto;
-      display: flex;
-      flex-wrap: wrap;
-    }
-
-    .hubhill-shared-nav a {
-      display: block;
-      padding: 12px 16px;
-      color: white;
-      font-weight: bold;
-      border-right: 1px solid #174b7e;
-      text-decoration: none;
-    }
-
-    .hubhill-shared-nav a:hover {
-      background: #164673;
-      text-decoration: none;
-    }
-
-    @media (max-width: 650px) {
-      .hubhill-shared-header .header-inner {
-        justify-content: center;
-      }
-
-      .hubhill-shared-header .auth-links {
-        margin-left: 0;
-      }
-
-      .hubhill-shared-nav a {
-        padding: 10px 11px;
-      }
-    }
-  `;
-
-  function installStyles() {
-    if (document.getElementById(STYLE_ID)) return;
-
+  function updateHeader() {
+    // Apply consistent header styling to all pages.
     const style = document.createElement("style");
-    style.id = STYLE_ID;
-    style.textContent = styles;
+
+    style.textContent = `
+      /* Force the logo to remain small */
+      body > header .hubhill-shared-logo {
+        display: block !important;
+        width: 90px !important;
+        min-width: 90px !important;
+        max-width: 90px !important;
+        height: auto !important;
+        flex: 0 0 90px !important;
+        overflow: visible !important;
+        line-height: 0 !important;
+      }
+
+      body > header .hubhill-shared-logo img {
+        display: block !important;
+        position: static !important;
+        width: 90px !important;
+        min-width: 90px !important;
+        max-width: 90px !important;
+        height: auto !important;
+        object-fit: contain !important;
+        top: auto !important;
+        left: auto !important;
+      }
+
+      body > header .header-inner {
+        height: auto !important;
+        min-height: 65px !important;
+        padding: 5px 12px !important;
+        align-items: center !important;
+      }
+
+      body > header .auth-links {
+        margin-left: auto;
+      }
+
+      body > nav .nav-inner {
+        max-width: 1100px;
+        margin: auto;
+        display: flex;
+        flex-wrap: wrap;
+      }
+
+      body > nav .nav-inner a {
+        display: block;
+        padding: 12px 16px;
+        color: white;
+        font-weight: bold;
+        text-decoration: none;
+      }
+
+      body > nav .nav-inner a:hover {
+        background: #164673;
+      }
+    `;
+
     document.head.appendChild(style);
-  }
 
-  function createLink(href, text) {
-    const link = document.createElement("a");
-    link.href = href;
-    link.textContent = text;
-    return link;
-  }
+    // Replace the old logo with image.png.
+    const header = document.querySelector("body > header");
 
-  function installHeader() {
-    installStyles();
-
-    const oldHeader = document.querySelector("body > header");
-
-    if (oldHeader) {
-      oldHeader.classList.add("hubhill-shared-header");
-
+    if (header) {
       const headerInner =
-        oldHeader.querySelector(".header-inner") || oldHeader;
+        header.querySelector(".header-inner") || header;
 
-      const oldBrand =
-        headerInner.querySelector(".brand, .hubhill-logo, .logo-crop");
+      const oldBrand = headerInner.querySelector(
+        ".brand, .hubhill-logo, .logo-crop, .hubhill-shared-logo"
+      );
 
       const logoLink = document.createElement("a");
       logoLink.href = "index.html";
       logoLink.className = "hubhill-shared-logo";
-      logoLink.setAttribute("aria-label", "HubHill Home");
 
-      const image = document.createElement("img");
-      image.src = "image.png";
-      image.alt = "HubHill - Your World. Your Watch.";
+      const logoImage = document.createElement("img");
+      logoImage.src = "image.png";
+      logoImage.alt = "HubHill";
 
-      logoLink.appendChild(image);
+      logoLink.appendChild(logoImage);
 
       if (oldBrand) {
         oldBrand.replaceWith(logoLink);
@@ -147,35 +92,44 @@
       }
     }
 
-    const oldNav = document.querySelector("body > nav");
+    // Keep all navigation links consistent.
+    const nav = document.querySelector("body > nav");
 
-    if (oldNav) {
-      oldNav.classList.add("hubhill-shared-nav");
-
-      let navInner = oldNav.querySelector(".nav-inner");
+    if (nav) {
+      let navInner = nav.querySelector(".nav-inner");
 
       if (!navInner) {
         navInner = document.createElement("div");
         navInner.className = "nav-inner";
-        oldNav.replaceChildren(navInner);
+        nav.replaceChildren(navInner);
       }
 
-      navInner.replaceChildren(
-        createLink("index.html", "Home"),
-        createLink("index.html#featured", "Videos"),
-        createLink("index.html#categories", "Categories"),
-        createLink("channel.html", "My Channel"),
-        createLink("upload.html", "Upload"),
-        createLink("favorites.html", "My Favorites"),
-        createLink("subscriptions.html", "My Subscriptions")
-      );
+      const links = [
+        ["index.html", "Home"],
+        ["index.html#featured", "Videos"],
+        ["index.html#categories", "Categories"],
+        ["channel.html", "My Channel"],
+        ["upload.html", "Upload"],
+        ["favorites.html", "My Favorites"],
+        ["subscriptions.html", "My Subscriptions"]
+      ];
+
+      navInner.replaceChildren();
+
+      links.forEach(([url, name]) => {
+        const link = document.createElement("a");
+        link.href = url;
+        link.textContent = name;
+        navInner.appendChild(link);
+      });
     }
 
+    // Browser tab icon is intentionally NOT changed.
   }
 
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", installHeader);
+    document.addEventListener("DOMContentLoaded", updateHeader);
   } else {
-    installHeader();
+    updateHeader();
   }
 })();
