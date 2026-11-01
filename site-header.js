@@ -34,16 +34,14 @@
       flex-wrap: wrap;
     }
 
-
-  .hubhill-shared-logo {
-    display: block;
-    width: 135px;
-    max-width: 35vw;
-    height: auto;
-    line-height: 0;
-    flex-shrink: 0;
-  }
-
+    .hubhill-shared-logo {
+      display: block;
+      width: 95px;
+      max-width: 95px;
+      height: auto;
+      line-height: 0;
+      flex-shrink: 0;
+    }
 
     .hubhill-shared-logo img {
       position: static !important;
